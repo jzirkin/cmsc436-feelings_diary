@@ -1,5 +1,5 @@
 # cmsc436-feelings_diary
 
 ## Artists
-Josh Zirkin
-Noah Salomons
+1. Josh Zirkin
+2. Noah Salomons
