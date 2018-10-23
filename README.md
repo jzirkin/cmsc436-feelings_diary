@@ -3,3 +3,4 @@
 ## Artists
 1. Josh Zirkin
 2. Noah Salomons
+3. Ryan Weissman
