@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "689775295561",
+    "firebase_url": "https://moodio-6d683.firebaseio.com",
+    "project_id": "moodio-6d683",
+    "storage_bucket": "moodio-6d683.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:689775295561:android:e7b9e4dffaf946dc",
+        "android_client_info": {
+          "package_name": "cmsc436.feelingsdiary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "689775295561-1ds9kpnsv66ais6lvfamb1sas8aiel5l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaL3h1a27o8uHzijmNyDDKwQdn74rhjEs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
