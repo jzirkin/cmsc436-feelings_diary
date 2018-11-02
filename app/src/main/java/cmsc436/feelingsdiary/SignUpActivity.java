@@ -54,6 +54,8 @@ public class SignUpActivity extends AppCompatActivity {
     // UI references.
     private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
+    private EditText mConfirmPasswordView;
+    private EditText mEmailView;
     private View mProgressView;
     private View mSignUpFieldView;
 
@@ -63,7 +65,7 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
         setupActionBar();
         // Set up the login form.
-        mUsernameView = findViewById(R.id.email);
+        mUsernameView = findViewById(R.id.username);
 
         mPasswordView = findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -75,6 +77,8 @@ public class SignUpActivity extends AppCompatActivity {
                 return true;
             }
         });
+        mConfirmPasswordView = findViewById(R.id.confirm_password);
+        mEmailView = findViewById(R.id.email);
 
         Button mSignUpButton = findViewById(R.id.email_sign_in_button);
         mSignUpButton.setOnClickListener(new OnClickListener() {
@@ -124,6 +128,8 @@ public class SignUpActivity extends AppCompatActivity {
         // Store values at the time of the login attempt.
         String username = mUsernameView.getText().toString();
         String password = mPasswordView.getText().toString();
+        String confirmPassword = mConfirmPasswordView.getText().toString();
+        String email = mEmailView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -148,6 +154,14 @@ public class SignUpActivity extends AppCompatActivity {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
+        } else if (!password.equals(confirmPassword)) {
+            mConfirmPasswordView.setError(getString(R.string.error_passwords_dont_match));
+            focusView = mConfirmPasswordView;
+            cancel = true;
+        } else if (!isEmailValid(email)) {
+            mEmailView.setError(getString(R.string.error_invalid_email));
+            focusView = mEmailView;
+            cancel = true;
         }
 
         if (cancel) {
@@ -158,7 +172,7 @@ public class SignUpActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserSignUpTask(username, password);
+            mAuthTask = new UserSignUpTask(username, password, email);
             mAuthTask.execute((Void) null);
         }
     }
@@ -172,6 +186,10 @@ public class SignUpActivity extends AppCompatActivity {
         return (password.length() > 5) &&
                 (password.matches(".*[A-Z].*")) &&
                 (password.matches(".*[^a-zA-Z0-9].*"));
+    }
+
+    private boolean isEmailValid(String email) {
+        return email.matches(".+@.+\\..+");
     }
 
     /**
@@ -218,11 +236,13 @@ public class SignUpActivity extends AppCompatActivity {
 
         private final String mUsername;
         private final String mPassword;
+        private final String mEmail;
         private boolean signUpSuccess;
 
-        UserSignUpTask(String username, String password) {
+        UserSignUpTask(String username, String password, String email) {
             mUsername = username;
             mPassword = password;
+            mEmail = email;
             signUpSuccess = true;
         }
 
@@ -236,7 +256,7 @@ public class SignUpActivity extends AppCompatActivity {
 
             // Using a ValueEventListener b/c it goes off immediately
             final DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("users");
-            myRef.addValueEventListener(new ValueEventListener() {
+            ValueEventListener listener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -253,7 +273,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                     // If we couldn't match anything, register the account
                     DatabaseReference toAdd = myRef.push();
-                    User newUser = new User(mUsername, mPassword, toAdd.getKey());
+                    User newUser = new User(mUsername, mPassword, mEmail, toAdd.getKey());
                     toAdd.setValue(newUser);
 
                     latch.countDown();
@@ -263,13 +283,15 @@ public class SignUpActivity extends AppCompatActivity {
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                     Log.i("SIGNUP", "The read failed: " + databaseError.getCode());
                 }
-            });
+            };
 
+            myRef.addValueEventListener(listener);
             try {
                 latch.await();
             } catch (InterruptedException e) {
                 return false;
             }
+            myRef.removeEventListener(listener);
             return signUpSuccess;
         }
 

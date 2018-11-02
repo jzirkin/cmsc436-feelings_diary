@@ -23,7 +23,7 @@
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="187dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:id="@+id/email_login_form"
@@ -73,19 +73,21 @@
                 android:text="@string/action_log_in"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/Sign"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/sign_up_text_field"
+                android:textAlignment="center" />
+
+            <Button
+                android:id="@+id/sign_up_button"
+                style="@android:style/TextAppearance.Material.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/action_sign_up" />
+
         </LinearLayout>
     </ScrollView>
 
-    <TextView
-        android:id="@+id/Sign"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sign_up_text_field" />
-
-    <Button
-        android:id="@+id/sign_up_button"
-        style="@android:style/TextAppearance.Material.Small"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/action_sign_up" />
 </LinearLayout>

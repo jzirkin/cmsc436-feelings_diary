@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.renderscript.Sampler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -126,6 +127,16 @@ public class LoginActivity extends AppCompatActivity {
         String username = mUsernameView.getText().toString();
         String password = mPasswordView.getText().toString();
 
+        if (username.isEmpty()) {
+            mUsernameView.requestFocus();
+            mUsernameView.setError(getString(R.string.error_field_required));
+            return;
+        } else if (password.isEmpty()) {
+            mPasswordView.requestFocus();
+            mPasswordView.setError(getString(R.string.error_field_required));
+            return;
+        }
+
         // Show a progress spinner, and kick off a background task to
         // perform the user login attempt.
         showProgress(true);
@@ -193,7 +204,7 @@ public class LoginActivity extends AppCompatActivity {
 
             // Using a ValueEventListener b/c it goes off immediately
             DatabaseReference myRef = mDatabase.getReference("users");
-            myRef.addValueEventListener(new ValueEventListener() {
+            ValueEventListener listener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -225,13 +236,15 @@ public class LoginActivity extends AppCompatActivity {
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                     Log.i("LOGIN", "The read failed: " + databaseError.getCode());
                 }
-            });
+            };
 
+            myRef.addValueEventListener(listener);
             try {
                 latch.await();
             } catch (InterruptedException e) {
                 return false;
             }
+            myRef.removeEventListener(listener);
             return loginSuccess;
         }
 

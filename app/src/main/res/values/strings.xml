@@ -19,5 +19,8 @@
     <string name="title_activity_sign_up">Sign up</string>
     <string name="cancel">Cancel</string>
     <string name="error_existing_username">This username already exists.</string>
-
+    <string name="prompt_confirm_password">Confirm Password</string>
+    <string name="prompt_email">Email</string>
+    <string name="error_passwords_dont_match">Passwords must match.</string>
+    <string name="error_invalid_email">Please enter a valid email.</string>
 </resources>
