@@ -9,7 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".LoginActivity">
+    tools:context=".SignUpActivity">
 
     <!-- Login progress -->
     <ProgressBar
@@ -23,7 +23,7 @@
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="187dp">
+        android:layout_height="176dp">
 
         <LinearLayout
             android:id="@+id/email_login_form"
@@ -65,27 +65,21 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/log_in_button"
+                android:id="@+id/email_sign_in_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/action_log_in"
+                android:text="@string/action_sign_up"
                 android:textStyle="bold" />
 
         </LinearLayout>
     </ScrollView>
 
-    <TextView
-        android:id="@+id/Sign"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sign_up_text_field" />
-
     <Button
-        android:id="@+id/sign_up_button"
+        android:id="@+id/cancel_button"
         style="@android:style/TextAppearance.Material.Small"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/action_sign_up" />
+        android:text="@string/cancel" />
 </LinearLayout>

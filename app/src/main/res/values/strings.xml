@@ -1,14 +1,23 @@
 <resources>
     <string name="app_name">Feelings Diary</string>
-    <string name="title_activity_login">Log in</string>
+
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
+    <string name="title_activity_login">Log in</string>
+    <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">Usernames can only contain letters and numbers.</string>
+    <string name="action_log_in">Log in</string>
+    <string name="action_log_in_short">Log in</string>
+    <string name="error_invalid_username">Usernames can only contain letters and numbers.</string>
     <string name="error_invalid_password">
         Passwords must be greater than 5 characters and must contain an uppercase and special character.</string>
     <string name="error_incorrect_password">This password did not match an existing username.</string>
     <string name="error_field_required">This field is required.</string>
+    <string name="sign_up_text_field">Don\'t have an account? Sign up below.</string>
+    <string name="action_sign_up">Sign Up</string>
+
+    <!-- Strings related to login -->
+    <string name="title_activity_sign_up">Sign up</string>
+    <string name="cancel">Cancel</string>
+    <string name="error_existing_username">This username already exists.</string>
+
 </resources>
