@@ -23,4 +23,11 @@
     <string name="prompt_email">Email</string>
     <string name="error_passwords_dont_match">Passwords must match.</string>
     <string name="error_invalid_email">Please enter a valid email.</string>
+
+    <!-- Strings related to viewing an entry -->
+    <string name="diary_entry_header">Diary Entry</string>
+    <string name="diary_entry_date">Date:</string>
+    <string name="diary_entry_location">Location:</string>
+    <string name="diary_entry_Mood">Mood:</string>
+    <string name="diary_entry_thoughts">Thoughts:</string>
 </resources>
