@@ -21,6 +21,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,27 +39,14 @@ import java.util.concurrent.CountDownLatch;
 public class SignUpActivity extends AppCompatActivity {
 
     /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
-
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserSignUpTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mUsernameView;
+    private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private EditText mConfirmPasswordView;
-    private EditText mEmailView;
     private View mProgressView;
     private View mSignUpFieldView;
 
@@ -65,7 +56,7 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
         setupActionBar();
         // Set up the login form.
-        mUsernameView = findViewById(R.id.username);
+        mEmailView = findViewById(R.id.email);
 
         mPasswordView = findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -78,7 +69,6 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
         mConfirmPasswordView = findViewById(R.id.confirm_password);
-        mEmailView = findViewById(R.id.email);
 
         Button mSignUpButton = findViewById(R.id.email_sign_in_button);
         mSignUpButton.setOnClickListener(new OnClickListener() {
@@ -122,45 +112,41 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         // Reset errors.
-        mUsernameView.setError(null);
+        mEmailView.setError(null);
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String username = mUsernameView.getText().toString();
+        String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
         String confirmPassword = mConfirmPasswordView.getText().toString();
-        String email = mEmailView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
-        // Check if username is empty
-        if (TextUtils.isEmpty(username)) {
-            mUsernameView.setError(getString(R.string.error_field_required));
-            focusView = mUsernameView;
+        // Check if email is empty
+        if (TextUtils.isEmpty(email)) {
+            mEmailView.setError(getString(R.string.error_field_required));
+            focusView = mEmailView;
             cancel = true;
-            // Check if username is valid
-        } else if (!isUsernameValid(username)) {
-            mUsernameView.setError(getString(R.string.error_invalid_username));
-            focusView = mUsernameView;
-            cancel = true;
-            // Check if password is empty
+        // Check if email is valid
+        } else if (!isEmailValid(email)) {
+                mEmailView.setError(getString(R.string.error_invalid_email));
+                focusView = mEmailView;
+                cancel = true;
+        // Check if password is empty
         } else if (TextUtils.isEmpty(password)) {
             mPasswordView.setError(getString(R.string.error_field_required));
             focusView = mPasswordView;
             cancel = true;
-            // Check if password is valid
+        // Check if password is valid
         } else if (!isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
+        // Check if passwords match
         } else if (!password.equals(confirmPassword)) {
             mConfirmPasswordView.setError(getString(R.string.error_passwords_dont_match));
             focusView = mConfirmPasswordView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
             cancel = true;
         }
 
@@ -172,20 +158,14 @@ public class SignUpActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserSignUpTask(username, password, email);
+            mAuthTask = new UserSignUpTask(email, password);
             mAuthTask.execute((Void) null);
         }
     }
 
-    private boolean isUsernameValid(String username) {
-        // Invalid if username contains something other than letters and/or numbers
-        return !username.matches(".*[^a-zA-Z0-9].*");
-    }
-
     private boolean isPasswordValid(String password) {
         return (password.length() > 5) &&
-                (password.matches(".*[A-Z].*")) &&
-                (password.matches(".*[^a-zA-Z0-9].*"));
+                (password.matches(".*[1-9].*"));
     }
 
     private boolean isEmailValid(String email) {
@@ -234,64 +214,39 @@ public class SignUpActivity extends AppCompatActivity {
      */
     public class UserSignUpTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mUsername;
-        private final String mPassword;
         private final String mEmail;
+        private final String mPassword;
         private boolean signUpSuccess;
+        private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-        UserSignUpTask(String username, String password, String email) {
-            mUsername = username;
-            mPassword = password;
+        UserSignUpTask(String email, String password) {
             mEmail = email;
+            mPassword = password;
             signUpSuccess = true;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
             // Super cool class that stops the Thread until its counted to 0
             // Lets us wait for the query before onPostExecute() goes
             final CountDownLatch latch = new CountDownLatch(1);
 
-            // Using a ValueEventListener b/c it goes off immediately
-            final DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("users");
-            ValueEventListener listener = new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-
-                        // Check if username exists, if so set failure and return
-                        DataSnapshot path = snapshot.child("username");
-                        if (path.getValue() != null && path.getValue().equals(mUsername)) {
+            mAuth.createUserWithEmailAndPassword(mEmail, mPassword)
+                    .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (!task.isSuccessful()) {
+                                setSignUpFail();
+                            }
                             latch.countDown();
-                            setSignUpFail();
-                            return;
                         }
+                    });
 
-                    }
-
-                    // If we couldn't match anything, register the account
-                    DatabaseReference toAdd = myRef.push();
-                    User newUser = new User(mUsername, mPassword, mEmail, toAdd.getKey());
-                    toAdd.setValue(newUser);
-
-                    latch.countDown();
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Log.i("SIGNUP", "The read failed: " + databaseError.getCode());
-                }
-            };
-
-            myRef.addValueEventListener(listener);
             try {
                 latch.await();
             } catch (InterruptedException e) {
                 return false;
             }
-            myRef.removeEventListener(listener);
             return signUpSuccess;
         }
 
@@ -307,8 +262,8 @@ public class SignUpActivity extends AppCompatActivity {
             if (success) {
                 finish();
             } else {
-                mUsernameView.setError(getString(R.string.error_existing_username));
-                mUsernameView.requestFocus();
+                mEmailView.setError(getString(R.string.error_existing_email));
+                mEmailView.requestFocus();
             }
         }
 

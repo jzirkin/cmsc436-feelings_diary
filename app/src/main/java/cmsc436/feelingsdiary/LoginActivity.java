@@ -19,6 +19,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,30 +34,25 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * A login screen that offers login via username/password.
+ * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity {
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mUsernameView;
+    private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private TextView mForgotPasswordView;
 
     // Firebase reference
     FirebaseDatabase mDatabase;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +61,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // Set up the login form.
-        // Username
-        mUsernameView = findViewById(R.id.email);
+        // Email
+        mEmailView = findViewById(R.id.email);
 
         // Password
         mPasswordView = findViewById(R.id.password);
@@ -74,6 +75,15 @@ public class LoginActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        mForgotPasswordView = findViewById(R.id.forgot_password);
+        mForgotPasswordView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
+            }
+        });
+
 
         // Sign in button
         Button mLoginButton = findViewById(R.id.log_in_button);
@@ -96,6 +106,18 @@ public class LoginActivity extends AppCompatActivity {
         mProgressView = findViewById(R.id.login_progress);
 
         mDatabase = FirebaseDatabase.getInstance();
+
+        mAuth = FirebaseAuth.getInstance();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // If user is already logged in, open up the real stuff
+        if (mAuth.getCurrentUser() != null) {
+            // TODO - Open up main screen because user is already logged in
+        }
     }
 
     /**
@@ -120,16 +142,16 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         // Reset errors.
-        mUsernameView.setError(null);
+        mEmailView.setError(null);
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String username = mUsernameView.getText().toString();
+        String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        if (username.isEmpty()) {
-            mUsernameView.requestFocus();
-            mUsernameView.setError(getString(R.string.error_field_required));
+        if (email.isEmpty()) {
+            mEmailView.requestFocus();
+            mEmailView.setError(getString(R.string.error_field_required));
             return;
         } else if (password.isEmpty()) {
             mPasswordView.requestFocus();
@@ -140,7 +162,7 @@ public class LoginActivity extends AppCompatActivity {
         // Show a progress spinner, and kick off a background task to
         // perform the user login attempt.
         showProgress(true);
-        mAuthTask = new UserLoginTask(username, password);
+        mAuthTask = new UserLoginTask(email, password);
         mAuthTask.execute((Void) null);
     }
 
@@ -185,66 +207,38 @@ public class LoginActivity extends AppCompatActivity {
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mUsername;
+        private final String mEmail;
         private final String mPassword;
         private boolean loginSuccess;
 
-        UserLoginTask(String username, String password) {
-            mUsername = username;
+        UserLoginTask(String email, String password) {
+            mEmail = email;
             mPassword = password;
             loginSuccess = false;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
-
             // Super cool class that stops the Thread until its counted to 0
             // Lets us wait for the query before onPostExecute() goes
             final CountDownLatch latch = new CountDownLatch(1);
 
-            // Using a ValueEventListener b/c it goes off immediately
-            DatabaseReference myRef = mDatabase.getReference("users");
-            ValueEventListener listener = new ValueEventListener() {
+            mAuth.signInWithEmailAndPassword(mEmail, mPassword)
+                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-
-                        // Check if username exists
-                        DataSnapshot path = snapshot.child("username");
-                        if (path.getValue() != null &&
-                                path.getValue().equals(mUsername)) {
-
-                            // Check if password matches correct username
-                            path = snapshot.child("password");
-                            if (path.getValue() != null &&
-                                    path.getValue().equals(mPassword)) {
-                                // If so set loginSuccess to true
-                                setLoginSuccess();
-                            }
-
-                            // Quit after we find the username because no duplicates
-                            latch.countDown();
-                            return;
-                        }
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        setLoginSuccess();
                     }
-
-                    // If we couldn't match anything, do nothing
                     latch.countDown();
                 }
+            });
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Log.i("LOGIN", "The read failed: " + databaseError.getCode());
-                }
-            };
-
-            myRef.addValueEventListener(listener);
             try {
                 latch.await();
             } catch (InterruptedException e) {
                 return false;
             }
-            myRef.removeEventListener(listener);
             return loginSuccess;
         }
 
@@ -258,7 +252,7 @@ public class LoginActivity extends AppCompatActivity {
             showProgress(false);
 
             if (success) {
-                // TODO - Replace with opening new Activity and pass through relevant user key
+                // TODO - Replace with opening new Activity and pass through relevant User
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
