@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -116,6 +117,11 @@ public class LoginActivity extends AppCompatActivity {
 
         // If user is already logged in, open up the real stuff
         if (mAuth.getCurrentUser() != null) {
+            SharedPreferences.Editor editor =
+                    getSharedPreferences("feelingsdiary", MODE_PRIVATE).edit();
+            editor.putString("uid", mAuth.getCurrentUser().getUid());
+            editor.apply();
+
             // TODO - Open up main screen because user is already logged in
         }
     }
@@ -252,6 +258,11 @@ public class LoginActivity extends AppCompatActivity {
             showProgress(false);
 
             if (success) {
+                SharedPreferences.Editor editor =
+                        getSharedPreferences("feelingsdiary", MODE_PRIVATE).edit();
+                editor.putString("uid", mAuth.getCurrentUser().getUid());
+                editor.apply();
+
                 // TODO - Replace with opening new Activity and pass through relevant User
                 finish();
             } else {
