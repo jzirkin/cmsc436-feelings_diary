@@ -28,4 +28,16 @@
     <string name="error_bad_email">There is no account associated with this email.</string>
     <string name="toast_email_sent">Email sent successfully!</string>
     <string name="return_button">Return</string>
+
+    <!-- Strings related to notifications -->
+    <string name="notification_title">Mood.io</string>
+    <string name="channel_title">Reminder Channel</string>
+    <string name="channel_description">Channel for reminders in Mood.io</string>
+    <string name="channel_id">reminderID</string>
+    <string name="daily_reminder_1">We haven\'t heard from you today. Come check in!</string>
+    <string name="daily_reminder_2">Make sure you check in today!</string>
+    <string name="daily_reminder_3">How are you feeling today?</string>
+    <string name="weekly_reminder_1">It\'s been a whole week since we last heard from you. What\'s been going on?</string>
+    <string name="weekly_reminder_2">It\'s been a while. We\'re interested in how you\'ve been doing.</string>
+    <string name="long_time_reminder">Hey it\'s been a really long time. How\'ve you been?</string>
 </resources>

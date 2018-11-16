@@ -33,11 +33,11 @@
         <receiver
             android:name=".NotificationReminderFragment$SendNotificationReceiver"
             android:enabled="true"
-            android:exported="false"></receiver>
-
-        <service
-            android:name=".NotificationReminderService"
-            android:exported="false"></service>
+            android:exported="false">
+            <intent-filter>
+                <action android:name="cmsc436.feelingsdiary.action.SEND_NOTIFICATION" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
