@@ -31,13 +31,7 @@
         <activity android:name=".ForgotPasswordActivity" />
 
         <receiver
-            android:name=".NotificationReminderFragment$SendNotificationReceiver"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="cmsc436.feelingsdiary.action.SEND_NOTIFICATION" />
-            </intent-filter>
-        </receiver>
+            android:name=".NotificationReminderReceiver" />
     </application>
 
 </manifest>
