@@ -61,7 +61,7 @@ public class EntryCreation extends AppCompatActivity implements Serializable {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM MM dd, yyyy h:mm a");
         String dateString = sdf.format(date);
 
-        Button mSubmitButton = findViewById(R.id.button);
+        Button mSubmitButton = findViewById(R.id.submitButton);
         mSeekBar = findViewById(R.id.seekBar2);
 
         final Date currentTime = Calendar.getInstance().getTime();
