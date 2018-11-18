@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EntryCreation">
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="295dp"
+        android:layout_height="270dp"
+        android:ems="10"
+        android:gravity="left"
+        android:inputType="textMultiLine"
+        android:singleLine="false"
+        tools:layout_editor_absoluteX="45dp"
+        tools:layout_editor_absoluteY="177dp" />
+
+    <SeekBar
+        android:id="@+id/seekBar2"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="231dp"
+        android:layout_height="47dp"
+        android:max="4"
+        android:progress="0"
+        tools:layout_editor_absoluteX="77dp"
+        tools:layout_editor_absoluteY="90dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="172dp"
+        android:layout_height="22dp"
+        android:text="How are you doing today?"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        tools:layout_editor_absoluteX="106dp"
+        tools:layout_editor_absoluteY="41dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        tools:layout_editor_absoluteX="147dp"
+        tools:layout_editor_absoluteY="454dp" />
+</android.support.constraint.ConstraintLayout>
