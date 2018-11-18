@@ -3,15 +3,16 @@ package cmsc436.feelingsdiary;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.renderscript.Sampler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,13 +25,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -51,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
     private View mLoginFormView;
     private TextView mForgotPasswordView;
 
+    private AlarmManager mAlarmManager;
+
     // Firebase reference
     FirebaseDatabase mDatabase;
     FirebaseAuth mAuth;
@@ -60,6 +57,26 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setupActionBar();
         setContentView(R.layout.activity_login);
+
+        // Create notification fragment if it doesn't exist yet
+        if (null == savedInstanceState) {
+            mAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+            Intent intent = new Intent(this, NotificationReminderReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                    this,
+                    0,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+
+            // set alarm to send out intent every day
+            mAlarmManager.setInexactRepeating(
+                    AlarmManager.RTC_WAKEUP,
+                    AlarmManager.INTERVAL_DAY,
+                    AlarmManager.INTERVAL_DAY,
+                    pendingIntent
+            );
+        }
 
         // Set up the login form.
         // Email
