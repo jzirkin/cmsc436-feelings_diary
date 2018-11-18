@@ -31,6 +31,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cmsc436.feelingsdiary.LoginActivity" />
         </activity>
+        <activity
+            android:name=".EntryCreation"
+            android:label="@string/title_activity_entry_creation"></activity>
     </application>
 
 </manifest>

@@ -23,4 +23,8 @@
     <string name="prompt_email">Email</string>
     <string name="error_passwords_dont_match">Passwords must match.</string>
     <string name="error_invalid_email">Please enter a valid email.</string>
+    <string name="title_activity_entry_creation">EntryCreation</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>
