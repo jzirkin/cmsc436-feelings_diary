@@ -18,8 +18,6 @@ public class ViewEntryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_entry);
 
-        Log.i("ViewEntryActivity", "In onCreate()");
-
         mDateText = findViewById(R.id.date);
         mMoodRating = findViewById(R.id.mood_scale);
         mLocationText = findViewById(R.id.recorded_location);
