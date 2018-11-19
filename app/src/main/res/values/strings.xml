@@ -28,6 +28,9 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="text">How are you doing today?</string>
+    <string name="hint">Today, I…</string>
+    <string name="submit">Submit</string>
 
     <!-- Strings related to Main -->
     <string name="add_new_entry">New Entry</string>
@@ -35,6 +38,7 @@
     <string name="view_calendar">Calendar</string>
     <string name="view_recent_entries">Recent Entries</string>
     <string name="menu_welcome">Welcome back</string>
+
     <!-- Strings related to Main Popup Menu -->
     <string name="settings">Settings</string>
     <string name="logout">Logout</string>

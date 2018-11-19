@@ -139,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
             editor.putString("uid", mAuth.getCurrentUser().getUid());
             editor.apply();
 
-            // TODO - Open up main screen because user is already logged in
+            startActivity(new Intent(this, MainActivity.class));
         }
     }
 
@@ -280,8 +280,7 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("uid", mAuth.getCurrentUser().getUid());
                 editor.apply();
 
-                // TODO - Replace with opening new Activity and pass through relevant User
-                finish();
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

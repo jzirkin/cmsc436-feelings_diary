@@ -7,17 +7,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         Button mAddEntryButton = findViewById(R.id.add_entry_button);
         mAddEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, AddEntryActivity.class)); //TODO: Add class for add entry activity
+                startActivity(new Intent(MainActivity.this, EntryCreation.class)); //TODO: Add class for add entry activity
+                // TODO - open entry that was just created
             }
         });
 
@@ -25,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         mStatsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, StatsActivity.class)); //TODO: Add class for stats activity
+                //startActivity(new Intent(MainActivity.this, StatsActivity.class)); //TODO: Add class for stats activity
             }
         });
 
@@ -33,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         mCalendarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, CalendarActivity.class)); //TODO: Add class for calendar activity
+                //startActivity(new Intent(MainActivity.this, CalendarActivity.class)); //TODO: Add class for calendar activity
             }
         });
 
@@ -41,7 +45,15 @@ public class MainActivity extends AppCompatActivity {
         mRecentEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, RecentEntriesActivity.class)); //TODO: Add class for recent entry activity
+                //startActivity(new Intent(MainActivity.this, RecentEntriesActivity.class)); //TODO: Add class for recent entry activity
+            }
+        });
+
+        findViewById(R.id.sign_out).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                finish();
             }
         });
     }

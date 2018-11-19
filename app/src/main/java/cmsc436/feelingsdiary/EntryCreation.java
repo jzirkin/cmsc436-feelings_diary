@@ -12,6 +12,9 @@ import android.widget.TextView;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import android.widget.Button;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -19,67 +22,59 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 
 public class EntryCreation extends AppCompatActivity implements Serializable {
 
     private TextView mTextMessage;
     private SeekBar mSeekBar;
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
-                    return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
-                    return true;
-            }
-            return false;
-        }
-    };
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry_creation);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
+        mTextMessage = findViewById(R.id.entry);
 
         /**
          * Gets the date and sets the hint for the TextView as the current date
          */
-        long date = System.currentTimeMillis();
-
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM MM dd, yyyy h:mm a");
-        String dateString = sdf.format(date);
-
         Button mSubmitButton = findViewById(R.id.button);
-        mSeekBar = findViewById(R.id.seekBar2);
+        mSeekBar = findViewById(R.id.seekBar);
 
-        final Date currentTime = Calendar.getInstance().getTime();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            userID = user.getUid();
+        } else {
+            finish();
+        }
 
-        /**
-         * Stores diary entry, rating, time, and location data into firebase.
-         */
+        // Stores diary entry, rating, time, and location data into firebase.
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final Date currentTime = Calendar.getInstance().getTime();
+
+                SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yy", Locale.US);
+                String fbDate = sdf.format(currentTime);
+
                 DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
-                databaseRef.child("users").child("diaryEntry").setValue(mTextMessage);
-                databaseRef.child("users").child("ratingEntry").setValue(mSeekBar.getProgress());
-                databaseRef.child("users").child("date").setValue(currentTime);
+                databaseRef = databaseRef.child(userID).child(fbDate).push();
+
+                sdf = new SimpleDateFormat("EEE, MMM dd, yyyy, h:mm a", Locale.US);
+                String entryDate = sdf.format(currentTime);
+                Entry entry = new Entry(
+                        entryDate,
+                        "" + (mSeekBar.getProgress() + 1),
+                        mTextMessage.getText().toString());
+                databaseRef.setValue(entry);
+
+                getSharedPreferences("feelingsdiary", MODE_PRIVATE).edit()
+                        .putInt("lastentry", 0).apply();
+                finish();
             }
         });
-
-        mTextMessage.setHint(dateString);
     }
-
 }

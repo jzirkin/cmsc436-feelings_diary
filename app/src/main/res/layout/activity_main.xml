@@ -65,4 +65,10 @@
             android:text="@string/view_recent_entries" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/sign_out"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button" />
+
 </LinearLayout>
