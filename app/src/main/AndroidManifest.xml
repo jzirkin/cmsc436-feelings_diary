@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="cmsc436.feelingsdiary">
-
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"
@@ -32,23 +28,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cmsc436.feelingsdiary.LoginActivity" />
         </activity>
-        <activity
-            android:name=".EntryCreation"
-            android:label="@string/title_activity_entry_creation"></activity>
 
         <activity android:name=".ForgotPasswordActivity" />
+        <activity android:name=".EntryCreation"/>
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".ViewEntryActivity"/>
 
-        <receiver
-            android:name=".NotificationReminderReceiver" />
-
-        <activity
-            android:name=".ViewEntryActivity"
-            android:label="@string/diary_entry_header">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <receiver android:name=".NotificationReminderReceiver" />
     </application>
 
 </manifest>
