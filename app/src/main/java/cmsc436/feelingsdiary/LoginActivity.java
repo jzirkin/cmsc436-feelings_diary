@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,7 +50,6 @@ public class LoginActivity extends AppCompatActivity {
     private AlarmManager mAlarmManager;
 
     // Firebase reference
-    FirebaseDatabase mDatabase;
     FirebaseAuth mAuth;
 
     @Override
@@ -123,8 +123,6 @@ public class LoginActivity extends AppCompatActivity {
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-        mDatabase = FirebaseDatabase.getInstance();
-
         mAuth = FirebaseAuth.getInstance();
     }
 
@@ -162,6 +160,13 @@ public class LoginActivity extends AppCompatActivity {
     private void attemptLogin() {
         if (mAuthTask != null) {
             return;
+        }
+
+        InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        try {
+            inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        } catch (NullPointerException e) {
+            // do nothing
         }
 
         // Reset errors.
@@ -275,11 +280,6 @@ public class LoginActivity extends AppCompatActivity {
             showProgress(false);
 
             if (success) {
-                SharedPreferences.Editor editor =
-                        getSharedPreferences("feelingsdiary", MODE_PRIVATE).edit();
-                editor.putString("uid", mAuth.getCurrentUser().getUid());
-                editor.apply();
-
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

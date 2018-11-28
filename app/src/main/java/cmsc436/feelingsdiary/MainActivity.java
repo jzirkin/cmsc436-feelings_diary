@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         mAddEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, EntryCreation.class)); //TODO: Add class for add entry activity
+                startActivity(new Intent(MainActivity.this, EntryCreation.class));
                 // TODO - open entry that was just created
             }
         });
@@ -37,15 +37,15 @@ public class MainActivity extends AppCompatActivity {
         mCalendarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(MainActivity.this, CalendarActivity.class)); //TODO: Add class for calendar activity
+                //startActivity(new Intent(MainActivity.this, CalendarActivity.class));
             }
         });
 
-        Button mRecentEntryButton = findViewById(R.id.recent_entries_button);
+        Button mRecentEntryButton = findViewById(R.id.search_button);
         mRecentEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(MainActivity.this, RecentEntriesActivity.class)); //TODO: Add class for recent entry activity
+                startActivity(new Intent(MainActivity.this, SearchActivity.class));
             }
         });
 

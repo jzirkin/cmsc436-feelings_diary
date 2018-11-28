@@ -28,11 +28,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cmsc436.feelingsdiary.LoginActivity" />
         </activity>
-
         <activity android:name=".ForgotPasswordActivity" />
-        <activity android:name=".EntryCreation"/>
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".ViewEntryActivity"/>
+        <activity android:name=".EntryCreation" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".ViewEntryActivity" />
+        <activity
+            android:name=".SearchActivity"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
 
         <receiver android:name=".NotificationReminderReceiver" />
     </application>

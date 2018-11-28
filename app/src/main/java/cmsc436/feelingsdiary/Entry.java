@@ -1,6 +1,8 @@
 package cmsc436.feelingsdiary;
 
-public class Entry {
+import java.io.Serializable;
+
+public class Entry implements Serializable {
 
     private String date;
     private String rating;

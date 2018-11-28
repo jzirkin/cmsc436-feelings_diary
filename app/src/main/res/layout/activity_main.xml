@@ -57,12 +57,12 @@
             android:text="@string/view_calendar" />
 
         <Button
-            android:id="@+id/recent_entries_button"
+            android:id="@+id/search_button"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/view_recent_entries" />
+            android:text="@string/view_search" />
     </LinearLayout>
 
     <Button

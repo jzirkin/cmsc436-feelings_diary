@@ -36,7 +36,7 @@
     <string name="add_new_entry">New Entry</string>
     <string name="view_stats">Stats</string>
     <string name="view_calendar">Calendar</string>
-    <string name="view_recent_entries">Recent Entries</string>
+    <string name="view_search">Search Entries</string>
     <string name="menu_welcome">Welcome back</string>
 
     <!-- Strings related to Main Popup Menu -->
@@ -69,4 +69,11 @@
     <string name="diary_entry_Mood">Mood:</string>
     <string name="diary_entry_thoughts">Thoughts:</string>
 
+    <!-- Strings related to searching -->
+    <string name="search_text">Enter a word or phrase to search:</string>
+    <string name="search_button">Search</string>
+    <string name="no_search_results">We couldn\'t find any entries that contained your search word(s). Please try again.</string>
+    <string name="datetime">Date and Time: </string>
+    <string name="mood_rating">Mood: </string>
+    <string name="message">Message: </string>
 </resources>
