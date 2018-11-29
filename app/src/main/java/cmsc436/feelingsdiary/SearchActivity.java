@@ -92,7 +92,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(SearchActivity.this, ViewEntryActivity.class);
-                intent.putExtra("entry", (Entry) mAdapter.getItem(position));
+                intent.putExtra("Entry", (Entry) mAdapter.getItem(position));
                 startActivity(intent);
             }
         });
