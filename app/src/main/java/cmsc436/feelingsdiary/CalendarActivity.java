@@ -67,7 +67,7 @@ public class CalendarActivity extends AppCompatActivity {
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
 
         /*
-         * When an entry time is selected. A ViewEntryActivity will be started.
+         * When an entry item is selected. A ViewEntryActivity will be started.
          */
         mEntryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
