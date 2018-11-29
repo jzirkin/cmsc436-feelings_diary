@@ -28,13 +28,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cmsc436.feelingsdiary.LoginActivity" />
         </activity>
-
         <activity android:name=".ForgotPasswordActivity" />
-        <activity android:name=".EntryCreation"/>
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".ViewEntryActivity"/>
+        <activity android:name=".EntryCreation" />
+        <activity android:name=".MainActivity" />
+
+        <activity
+            android:name=".ViewEntryActivity"
+            android:label="@string/diary_entry_label">
+        </activity>
 
         <receiver android:name=".NotificationReminderReceiver" />
+
+        <activity
+            android:name=".CalendarActivity"
+            android:label="@string/calendar_vew_label">
+        </activity>
+
     </application>
 
 </manifest>

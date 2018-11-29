@@ -23,22 +23,11 @@ public class ViewEntryActivity extends AppCompatActivity {
         mLocationText = findViewById(R.id.recorded_location);
         mThoughtsText = findViewById(R.id.recorded_thoughts);
 
-        String thoughtsStr = "This is a really really long String. I am going to fill it up to see how the text wraps. " +
-                "Hello my name is Joshua Zirkin and I am taking CMSC436. This is a really really long String. I am going to " +
-                "fill it up to see how the text wraps. Hello my name is Joshua Zirkin and I am taking CMSC436.This is a really " +
-                "really long String. I am going to fill it up to see how the text wraps. Hello my name is Joshua Zirkin and I am " +
-                "taking CMSC436.This is a really really long String. I am going to fill it up to see how the text wraps. Hello my " +
-                "name is Joshua Zirkin and I am taking CMSC436.This is a really really long String. I am going to fill it up to see " +
-                "how the text wraps. Hello my name is Joshua Zirkin and I am taking CMSC436.This is a really really long String. " +
-                "I am going to fill it up to see how the text wraps. Hello my name is Joshua Zirkin and I am taking CMSC436." +
-                "This is a really really long String. I am going to fill it up to see how the text wraps. Hello my name is " +
-                "Joshua Zirkin and I am taking CMSC436.This is a really really long String. I am going to fill it up to see " +
-                "how the text wraps. Hello my name is Joshua Zirkin and I am taking CMSC436.This is a really really long String. " +
-                "I am going to fill it up to see how the text wraps. Hello my name is Joshua Zirkin and I am taking CMSC436.";
+        Entry entry = (Entry) getIntent().getSerializableExtra("Entry");
 
-        mDateText.setText("November 10, 2018");
-        mMoodRating.setRating(4);
-        mLocationText.setText("Google Maps Link");
-        mThoughtsText.setText(thoughtsStr);
+        mDateText.setText(entry.getDate());
+        mMoodRating.setRating(Float.parseFloat(entry.getRating()));
+        mLocationText.setText("No implemented yet");
+        mThoughtsText.setText(entry.getEntry());
     }
 }
