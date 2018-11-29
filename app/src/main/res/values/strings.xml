@@ -38,6 +38,7 @@
     <string name="view_calendar">Calendar</string>
     <string name="view_search">Search Entries</string>
     <string name="menu_welcome">Welcome back</string>
+    <string name="log_out">Log Out</string>
 
     <!-- Strings related to Main Popup Menu -->
     <string name="settings">Settings</string>
