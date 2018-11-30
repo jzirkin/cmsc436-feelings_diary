@@ -49,7 +49,7 @@ public class ViewEntryActivity extends AppCompatActivity {
         mLocationText = findViewById(R.id.recorded_location);
         mThoughtsText = findViewById(R.id.recorded_thoughts);
 
-        mEntry = (Entry) getIntent().getSerializableExtra("Entry");
+        mEntry = (Entry) getIntent().getSerializableExtra("entry");
 
         mDateText.setText(mEntry.getDate());
         mMoodRating.setRating(Float.parseFloat(mEntry.getRating()));
