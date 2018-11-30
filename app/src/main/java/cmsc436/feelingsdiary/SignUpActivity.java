@@ -35,14 +35,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.concurrent.CountDownLatch;
 
-/**
- * A login screen that offers login via email/password.
- */
+/* Activity for creating a new account for the app using FirebaseAuth */
 public class SignUpActivity extends AppCompatActivity {
 
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
     private UserSignUpTask mAuthTask = null;
 
     // UI references.
@@ -56,11 +51,10 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        setupActionBar();
-        // Set up the login form.
         mEmailView = findViewById(R.id.email);
 
         mPasswordView = findViewById(R.id.password);
+        // Listener for Enter Key
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -92,27 +86,15 @@ public class SignUpActivity extends AppCompatActivity {
         mProgressView = findViewById(R.id.login_progress);
     }
 
-    /**
-     * Set up the {@link android.app.ActionBar}, if the API is available.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private void setupActionBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            // Show the Up button in the action bar.
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
+    /* Starts the signing up chain of events. First checks for email/password validity, then
+       sends the AsyncTask to do its thing.
      */
     private void attemptSignUp() {
         if (mAuthTask != null) {
             return;
         }
 
+        // Hides the keyboard
         InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         try {
             inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
@@ -181,9 +163,7 @@ public class SignUpActivity extends AppCompatActivity {
         return email.matches(".+@.+\\..+");
     }
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
+    /* Hides the UI and shows a spinning-loading bar while the AsyncTask is running */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
@@ -217,10 +197,8 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
+    /* AsyncTask that registers the user with FirebaseAuth. Fails if the email already is
+    * registered or their is some error, succeeds otherwise */
     public class UserSignUpTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mEmail;
@@ -242,6 +220,7 @@ public class SignUpActivity extends AppCompatActivity {
 
             mAuth.createUserWithEmailAndPassword(mEmail, mPassword)
                     .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
+                        // If the task failed, update signUpSuccess
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (!task.isSuccessful()) {
@@ -268,8 +247,10 @@ public class SignUpActivity extends AppCompatActivity {
             mAuthTask = null;
             showProgress(false);
 
+            // If the account was registered, close the Activity
             if (success) {
                 finish();
+            // Otherwise, let the user know why
             } else {
                 mEmailView.setError(getString(R.string.error_existing_email));
                 mEmailView.requestFocus();

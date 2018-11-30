@@ -2,6 +2,8 @@ package cmsc436.feelingsdiary;
 
 import java.io.Serializable;
 
+/* Class that represents an entry. Used for easily storing entries in Firebase and is
+*  passed to the ViewEntryActivity for viewing. */
 public class Entry implements Serializable {
 
     private String date;

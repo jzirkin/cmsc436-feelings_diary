@@ -10,15 +10,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+/* Adapter for mResultsList in SearchActivity */
 public class SearchListAdapter extends BaseAdapter {
 
     private ArrayList<Entry> list = new ArrayList<>();
-    private Context mContext;
     private static LayoutInflater inflater;
 
     public SearchListAdapter(Context context) {
-        mContext = context;
-        inflater = LayoutInflater.from(mContext);
+        inflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -43,6 +42,7 @@ public class SearchListAdapter extends BaseAdapter {
 
         Entry entry = list.get(position);
 
+        // ViewHolder stuff for better scrolling
         if (convertView == null) {
             holder = new ViewHolder();
             newView = inflater.inflate(R.layout.entry_list_layout, parent, false);
@@ -55,17 +55,19 @@ public class SearchListAdapter extends BaseAdapter {
             holder = (ViewHolder) newView.getTag();
         }
 
-        holder.datetime.setText("Date and Time: " + entry.getDate());
-        holder.moodRating.setText("Mood: " + entry.getRating());
+        // Set appropriate data in the View
+        holder.datetime.setText(R.string.datetime + entry.getDate());
+        holder.moodRating.setText(R.string.mood_rating + entry.getRating());
         if (entry.getEntry().length() > 26) {
-            holder.message.setText("Message: " + entry.getEntry().substring(0, 26) + "...");
+            holder.message.setText(R.string.message + entry.getEntry().substring(0, 26) + "...");
         } else {
-            holder.message.setText("Message: " + entry.getEntry());
+            holder.message.setText(R.string.message + entry.getEntry());
         }
 
         return newView;
     }
 
+    // ViewHolder for better scrolling
     private static class ViewHolder {
         TextView datetime;
         TextView moodRating;

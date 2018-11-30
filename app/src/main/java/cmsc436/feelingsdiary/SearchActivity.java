@@ -31,6 +31,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
+/* Activity that allows users to search their entries for word(s). Either shows no entries (if
+   none are found), or a list of all entries that contain the word(s).
+ */
 public class SearchActivity extends AppCompatActivity {
 
     private EditText mSearchInput;
@@ -54,11 +57,15 @@ public class SearchActivity extends AppCompatActivity {
 
         mProgressView = findViewById(R.id.login_progress);
         mSearchInput = findViewById(R.id.search_editText);
+
+        // Layout will be populated by either a TextView for no results found or a list of results
         mSearchLayout = findViewById(R.id.search_layout);
+
         mSearchButton = findViewById(R.id.search_button);
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Hides the keyboard on button click
                 InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 try {
                     inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
@@ -66,14 +73,19 @@ public class SearchActivity extends AppCompatActivity {
                     // do nothing
                 }
 
+                // We only want to do something if this is the first time the button was pressed
+                // or the previous AsyncTask is done. Otherwise weird stuff can happen.
                 if (task == null || task.getStatus() == AsyncTask.Status.FINISHED) {
+                    // Hide the UI
                     showProgress(true);
 
                     String keyword = mSearchInput.getText().toString();
 
+                    // Do nothing if no text was entered
                     if (keyword.equals("")) {
                         setNoResultsFound();
                         showProgress(false);
+                    // Otherwise start the search
                     } else {
                         task = new SearchTask(keyword);
                         task.execute((Void) null);
@@ -82,12 +94,15 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+        // Simple TextView if no results are found
         mNoResults = new TextView(this);
         mNoResults.setText(R.string.no_search_results);
 
+        // List that shows all results found (must be > 0)
         mAdapter = new SearchListAdapter(this);
         mResultsList = new ListView(this);
         mResultsList.setFooterDividersEnabled(true);
+        // Set onClickListener to open the entry when clicked in the list
         mResultsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -98,6 +113,7 @@ public class SearchActivity extends AppCompatActivity {
         });
         mResultsList.setAdapter(mAdapter);
 
+        // If no one is logged in, get out
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
             finish();
@@ -107,12 +123,14 @@ public class SearchActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference().child(uID);
     }
 
+    // Removes Views from the layout, clears results in the adapter, and puts mNoResults in
     private void setNoResultsFound() {
         mSearchLayout.removeAllViews();
         mAdapter.clearList();
         mSearchLayout.addView(mNoResults);
     }
 
+    // Removes Views from the layout, clears results, adds new ones, and puts mResultsList in
     private void setResultsFound(List<Entry> entries) {
         mSearchLayout.removeAllViews();
         mAdapter.clearList();
@@ -120,6 +138,7 @@ public class SearchActivity extends AppCompatActivity {
         mSearchLayout.addView(mResultsList);
     }
 
+    // Same as in LoginActivity but smaller and only hides mSearchLayout, not everything
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
@@ -153,9 +172,7 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Represents an asynchronous login task used to authenticate the user.
-     */
+    /* AsyncTask that executes a search given keyword(s). It is not case sensitive */
     public class SearchTask extends AsyncTask<Void, Void, Boolean> {
 
         String keyword;
@@ -168,14 +185,19 @@ public class SearchActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
 
+            // CountDownLatch so we wait for the search do be done before finishing
             final CountDownLatch latch = new CountDownLatch(1);
 
+            // Gets quick snapshot of database
             mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    // For all dates with entries
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        // For every entry in that date
                         for (DataSnapshot data : snapshot.getChildren()) {
                             String message = (String) data.child("entry").getValue();
+                            // If the message contains the keyword(s), add the Entry to the list
                             if (message != null && message.toLowerCase().contains(keyword.toLowerCase())) {
                                 String datetime = (String) data.child("date").getValue();
                                 String mood = (String) data.child("rating").getValue();
@@ -203,6 +225,7 @@ public class SearchActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(final Boolean success) {
+            // Set the mSearchLayout depending on if results were found or not
             if (list.size() == 0) {
                 setNoResultsFound();
             } else {

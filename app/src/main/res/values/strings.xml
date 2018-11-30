@@ -37,7 +37,8 @@
     <string name="view_stats">Stats</string>
     <string name="view_calendar">Calendar</string>
     <string name="view_search">Search Entries</string>
-    <string name="menu_welcome">Welcome back</string>
+    <string name="menu_welcome">Welcome</string>
+    <string name="sign_out">Sign Out</string>
 
     <!-- Strings related to Main Popup Menu -->
     <string name="settings">Settings</string>

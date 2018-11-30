@@ -16,6 +16,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/menu_welcome"
+            android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
     </LinearLayout>
@@ -67,8 +68,9 @@
 
     <Button
         android:id="@+id/sign_out"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:text="@string/sign_out" />
 
 </LinearLayout>

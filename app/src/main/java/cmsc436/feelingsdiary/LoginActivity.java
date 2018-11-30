@@ -30,9 +30,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.concurrent.CountDownLatch;
 
-/**
- * A login screen that offers login via email/password.
- */
+/* Activity for logging. Utilizes an AsyncTask for the logging in, as it could take more than
+* a few seconds. */
 public class LoginActivity extends AppCompatActivity {
 
     /**
@@ -55,10 +54,11 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setupActionBar();
         setContentView(R.layout.activity_login);
 
-        // Create notification fragment if it doesn't exist yet
+        // Create Alarm that goes off every day. Sends Intent to NotificationReminderReceiver
+        // and response is handled there. This Alarm allows for notifications to occur every day
+        // and while the app is not currently open.
         if (null == savedInstanceState) {
             mAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-        // Sign in button
+        // Log in button
         Button mLoginButton = findViewById(R.id.log_in_button);
         mLoginButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -141,27 +141,15 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Set up the {@link android.app.ActionBar}, if the API is available.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private void setupActionBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            // Show the Up button in the action bar.
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
+    /* Starts the logging in chain of events. First checks for email/password validity, then
+       sends the AsyncTask to do its thing.
      */
     private void attemptLogin() {
         if (mAuthTask != null) {
             return;
         }
 
+        // Hides the keyboard
         InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         try {
             inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
@@ -194,9 +182,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuthTask.execute((Void) null);
     }
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
+    /* Hides the UI and shows a spinning-loading bar while the AsyncTask is running */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
@@ -230,8 +216,8 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Represents an asynchronous login task used to authenticate the user.
+    /* AsyncTask that logs the user in given an email and password. Uses FirebaseAuth
+       to accomplish this task simply.
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
@@ -255,18 +241,22 @@ public class LoginActivity extends AppCompatActivity {
                     .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
+                    // If we log in successfully, update loginSuccess
                     if (task.isSuccessful()) {
                         setLoginSuccess();
                     }
+                    // Let the thread through the "latch.await()" call
                     latch.countDown();
                 }
             });
 
+            // Wait for logging in to finish before ending the AsyncTask
             try {
                 latch.await();
             } catch (InterruptedException e) {
                 return false;
             }
+
             return loginSuccess;
         }
 
@@ -277,10 +267,13 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
+            // reshow the UI
             showProgress(false);
 
+            // If successful, open the main menu
             if (success) {
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            // Otherwise the password did not match an email in Firebase
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

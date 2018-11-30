@@ -1,5 +1,6 @@
 package cmsc436.feelingsdiary;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -24,7 +25,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-
+/* Activity for creating an Entry. Entries are stored in Firebase under the user and
+* date they are created. */
 public class EntryCreation extends AppCompatActivity implements Serializable {
 
     private TextView mTextMessage;
@@ -37,17 +39,15 @@ public class EntryCreation extends AppCompatActivity implements Serializable {
         setContentView(R.layout.activity_entry_creation);
 
         mTextMessage = findViewById(R.id.entry);
-
-        /**
-         * Gets the date and sets the hint for the TextView as the current date
-         */
         Button mSubmitButton = findViewById(R.id.button);
         mSeekBar = findViewById(R.id.seekBar);
 
+        // If there is not a user currently logged in, get out
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             userID = user.getUid();
         } else {
+            setResult(RESULT_CANCELED);
             finish();
         }
 
@@ -71,8 +71,12 @@ public class EntryCreation extends AppCompatActivity implements Serializable {
                         mTextMessage.getText().toString());
                 databaseRef.setValue(entry);
 
+                // For notifications - reset the counter for entries
                 getSharedPreferences("feelingsdiary", MODE_PRIVATE).edit()
                         .putInt("lastentry", 0).apply();
+                Intent intent = new Intent();
+                intent.putExtra("entry", entry);
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,8 +21,8 @@ public class MainActivity extends AppCompatActivity {
         mAddEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, EntryCreation.class));
-                // TODO - open entry that was just created
+                // Start for result to open up created entry if successful
+                startActivityForResult(new Intent(MainActivity.this, EntryCreation.class), 0);
             }
         });
 
@@ -52,10 +53,33 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.sign_out).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // sign out
                 FirebaseAuth.getInstance().signOut();
+                // remove the user id from sharedpreferences
+                getSharedPreferences("feelingsdiary", MODE_PRIVATE).edit().putString("uid", null).apply();
                 finish();
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // If no one is logged in, get out
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            finish();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // If EntryCreation exited successfully, open up the entry that was just created
+        if (resultCode == RESULT_OK) {
+            Intent intent = new Intent(this, ViewEntryActivity.class);
+            intent.putExtra("Entry", data.getSerializableExtra("entry"));
+            startActivity(intent);
+        }
     }
 
     public void openSettingsMenu(View v){

@@ -15,6 +15,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
+/* Activity that allows users to send themselves an email to reset their password if they
+* forgot it. Only works if the email is already registered in Firebase */
 public class ForgotPasswordActivity extends AppCompatActivity {
 
     @Override
@@ -29,6 +31,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         mResetPasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Makes the keyboard go down upon button press
                 InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 try {
                     inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
