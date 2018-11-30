@@ -88,8 +88,7 @@ public class CalendarActivity extends AppCompatActivity {
                 Log.i(TAG, "In onItemSelected");
                 Intent viewEntryIntent = new Intent(CalendarActivity.this, ViewEntryActivity.class);
 
-                viewEntryIntent.putExtra("Entry", mSelectedDateEntryList.get(position));
-                viewEntryIntent.putExtra("userID", mUserID);
+                viewEntryIntent.putExtra("entry", mSelectedDateEntryList.get(position));
 
                 startActivityForResult(viewEntryIntent ,2);
             }
@@ -155,7 +154,13 @@ public class CalendarActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "No recorded entries", Toast.LENGTH_SHORT).show();
                 } else {
                     for (Entry entry : mSelectedDateEntryList) {
-                        entryTimeList.add(getTime(entry.getDate()));
+                        String message = "    ";
+                        if (entry.getEntry().length() > 36) {
+                            message += entry.getEntry().substring(0, 36) + "...";
+                        } else {
+                            message += entry.getEntry();
+                        }
+                        entryTimeList.add(getTime(entry.getDate()) + message);
                     }
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(CalendarActivity.this,

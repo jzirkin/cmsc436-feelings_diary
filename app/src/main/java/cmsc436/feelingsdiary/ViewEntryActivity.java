@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,7 +41,13 @@ public class ViewEntryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_entry);
 
-        String userID = (String) getIntent().getSerializableExtra("userID");
+        String userID = null;
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            userID = user.getUid();
+        } else {
+            finish();
+        }
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference databaseRef = database.getReference(userID);
@@ -102,7 +110,8 @@ public class ViewEntryActivity extends AppCompatActivity {
                 // Iterate through all entries created on the same date as the current entry
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     // Checks if the current child entry is the same as the one to be deleted
-                    if (child.getValue(Entry.class).getDate().equals(entry.getDate())) {
+                    if (child.getValue(Entry.class).getDate().equals(entry.getDate()) &&
+                            child.getValue(Entry.class).getEntry().equals(entry.getEntry())) {
                         child.getRef().removeValue();
                     }
                 }

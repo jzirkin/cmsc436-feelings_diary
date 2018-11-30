@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             Intent intent = new Intent(this, ViewEntryActivity.class);
             intent.putExtra("entry", data.getSerializableExtra("entry"));
-            intent.putExtra("userID", data.getSerializableExtra("userID"));
             startActivity(intent);
         }
     }

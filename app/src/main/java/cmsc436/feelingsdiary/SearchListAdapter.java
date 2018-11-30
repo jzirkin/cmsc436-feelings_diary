@@ -15,9 +15,11 @@ public class SearchListAdapter extends BaseAdapter {
 
     private ArrayList<Entry> list = new ArrayList<>();
     private static LayoutInflater inflater;
+    private Context context;
 
     public SearchListAdapter(Context context) {
         inflater = LayoutInflater.from(context);
+        this.context = context;
     }
 
     @Override
@@ -56,14 +58,14 @@ public class SearchListAdapter extends BaseAdapter {
         }
 
         // Set appropriate data in the View
-        holder.datetime.setText(R.string.datetime + entry.getDate());
-        holder.moodRating.setText(R.string.mood_rating + entry.getRating());
+        holder.datetime.setText(context.getString(R.string.datetime) + entry.getDate());
+        holder.moodRating.setText(context.getString(R.string.mood_rating) + entry.getRating());
         if (entry.getEntry().length() == 0) {
-            holder.message.setText(R.string.message + "None");
+            holder.message.setText(context.getString(R.string.message) + "None");
         } else if (entry.getEntry().length() > 26) {
-            holder.message.setText(R.string.message + entry.getEntry().substring(0, 26) + "...");
+            holder.message.setText(context.getString(R.string.message) + entry.getEntry().substring(0, 26) + "...");
         } else {
-            holder.message.setText(R.string.message + entry.getEntry());
+            holder.message.setText(context.getString(R.string.message) + entry.getEntry());
         }
 
         return newView;

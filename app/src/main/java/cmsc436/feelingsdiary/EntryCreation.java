@@ -72,7 +72,6 @@ public class EntryCreation extends AppCompatActivity implements Serializable {
                         .putInt("lastentry", 0).apply();
                 Intent intent = new Intent();
                 intent.putExtra("entry", entry);
-                intent.putExtra("userID", userID);
                 setResult(RESULT_OK, intent);
                 finish();
             }
