@@ -114,6 +114,7 @@ public class CalendarActivity extends AppCompatActivity {
         databaseDateRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Iterates through each entry at the specified date
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     mSelectedDateEntryList.add(child.getValue(Entry.class));
                     Log.i(TAG, mSelectedDateEntryList.get(0).getDate());
