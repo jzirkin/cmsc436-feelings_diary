@@ -1,12 +1,12 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        tools:context=".ViewEntryActivity" >
+        tools:context=".ViewEntryActivity">
 
         <TextView
             android:id="@+id/date"
@@ -81,6 +81,15 @@
             android:layout_below="@+id/thoughts"
             android:layout_marginTop="0dp"
             android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/delete_entry_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/recorded_thoughts"
+            android:layout_centerInParent="true"
+            android:text="@string/delete_diary_entry"
+            android:textAllCaps="false" />
 
     </RelativeLayout>
 

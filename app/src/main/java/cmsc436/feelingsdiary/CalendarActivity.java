@@ -1,6 +1,7 @@
 package cmsc436.feelingsdiary;
 
 import android.content.Intent;
+import android.location.LocationProvider;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,7 +33,15 @@ public class CalendarActivity extends AppCompatActivity {
     private String mUserID;
     private ListView mEntryListView;
     private ArrayList<Entry> mSelectedDateEntryList;
-    private final String TAG = "CALENDAR_ACTIVIY";
+    private final String TAG = "CALENDAR_ACTIVITY";
+
+    private final int RESULT_DELETED_ENTRY = 2;
+
+    private DatabaseReference mDatabaseRef;
+
+    private int mCurrSelectedYear;
+    private int mCurrSelectedMonth;
+    private int mCurrSelectedDayOfMonth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,16 +64,20 @@ public class CalendarActivity extends AppCompatActivity {
             finish();
         }
 
-        final DatabaseReference databaseRef = database.getReference(mUserID);
+        mDatabaseRef = database.getReference(mUserID);
 
         /*
          * The calendar will open with the current date selected. This will load the entries into
          * the list.
          */
-        updateEntryList(databaseRef,
+        updateEntryList(mDatabaseRef,
                 Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+
+        mCurrSelectedYear = Calendar.getInstance().get(Calendar.YEAR);
+        mCurrSelectedMonth = Calendar.getInstance().get(Calendar.MONTH);
+        mCurrSelectedDayOfMonth = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 
         /*
          * When an entry item is selected. A ViewEntryActivity will be started.
@@ -76,8 +89,9 @@ public class CalendarActivity extends AppCompatActivity {
                 Intent viewEntryIntent = new Intent(CalendarActivity.this, ViewEntryActivity.class);
 
                 viewEntryIntent.putExtra("Entry", mSelectedDateEntryList.get(position));
+                viewEntryIntent.putExtra("userID", mUserID);
 
-                startActivity(viewEntryIntent);
+                startActivityForResult(viewEntryIntent ,2);
             }
         });
 
@@ -85,9 +99,26 @@ public class CalendarActivity extends AppCompatActivity {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 clearEntryList();
-                updateEntryList(databaseRef, year, month, dayOfMonth);
+
+                mCurrSelectedYear = year;
+                mCurrSelectedMonth = month;
+                mCurrSelectedDayOfMonth = dayOfMonth;
+
+                updateEntryList(mDatabaseRef, year, month, dayOfMonth);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // If the previously viewed Entry was deleted, the list of entries has to be refreshed
+        if (resultCode == RESULT_DELETED_ENTRY) {
+            clearEntryList();
+            updateEntryList(mDatabaseRef, mCurrSelectedYear,
+                    mCurrSelectedMonth, mCurrSelectedDayOfMonth);
+        }
     }
 
     /**
@@ -167,6 +198,12 @@ public class CalendarActivity extends AppCompatActivity {
         return sdf.format(date);
     }
 
+    /**
+     * Parses the time from a date string
+     *
+     * @param dateStr A date String in the form EEE, MMM dd, yyyy, h:mm a
+     * @return An String of the form h:mm with AM/PM representing the time
+     */
     private String getTime(String dateStr) {
         Date date = null;
         try {

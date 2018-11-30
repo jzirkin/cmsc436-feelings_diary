@@ -75,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
         // If EntryCreation exited successfully, open up the entry that was just created
         if (resultCode == RESULT_OK) {
             Intent intent = new Intent(this, ViewEntryActivity.class);
-            intent.putExtra("Entry", data.getSerializableExtra("entry"));
+            intent.putExtra("entry", data.getSerializableExtra("entry"));
+            intent.putExtra("userID", data.getSerializableExtra("userID"));
             startActivity(intent);
         }
     }

@@ -69,6 +69,9 @@
     <string name="diary_entry_location">Location:</string>
     <string name="diary_entry_Mood">Mood:</string>
     <string name="diary_entry_thoughts">Thoughts:</string>
+    <string name="delete_diary_entry">Delete Entry</string>
+    <string name="delete_prompt">Are you sure you want to delete this diary Entry?</string>
+    <string name="yes_delete">Yes</string>
 
     <!-- Strings related to searching -->
     <string name="search_text">Enter a word or phrase to search:</string>
@@ -78,6 +81,6 @@
     <string name="mood_rating">Mood: </string>
     <string name="message">Message: </string>
 
-    <!-- Strings related to viewing an entry -->
+    <!-- Strings related to the CalendarActivity -->
     <string name="calendar_vew_label">Select a Date to View Entries</string>
 </resources>

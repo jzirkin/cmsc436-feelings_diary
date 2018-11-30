@@ -2,10 +2,7 @@ package cmsc436.feelingsdiary;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -16,11 +13,8 @@ import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -78,6 +72,7 @@ public class EntryCreation extends AppCompatActivity implements Serializable {
                         .putInt("lastentry", 0).apply();
                 Intent intent = new Intent();
                 intent.putExtra("entry", entry);
+                intent.putExtra("userID", userID);
                 setResult(RESULT_OK, intent);
                 finish();
             }
