@@ -55,8 +55,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // sign out
                 FirebaseAuth.getInstance().signOut();
-                // remove the user id from sharedpreferences
-                getSharedPreferences("feelingsdiary", MODE_PRIVATE).edit().putString("uid", null).apply();
                 finish();
             }
         });

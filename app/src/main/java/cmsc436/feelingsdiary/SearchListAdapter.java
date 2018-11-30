@@ -58,7 +58,9 @@ public class SearchListAdapter extends BaseAdapter {
         // Set appropriate data in the View
         holder.datetime.setText(R.string.datetime + entry.getDate());
         holder.moodRating.setText(R.string.mood_rating + entry.getRating());
-        if (entry.getEntry().length() > 26) {
+        if (entry.getEntry().length() == 0) {
+            holder.message.setText(R.string.message + "None");
+        } else if (entry.getEntry().length() > 26) {
             holder.message.setText(R.string.message + entry.getEntry().substring(0, 26) + "...");
         } else {
             holder.message.setText(R.string.message + entry.getEntry());

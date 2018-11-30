@@ -132,11 +132,6 @@ public class LoginActivity extends AppCompatActivity {
 
         // If user is already logged in, open up the real stuff
         if (mAuth.getCurrentUser() != null) {
-            SharedPreferences.Editor editor =
-                    getSharedPreferences("feelingsdiary", MODE_PRIVATE).edit();
-            editor.putString("uid", mAuth.getCurrentUser().getUid());
-            editor.apply();
-
             startActivity(new Intent(this, MainActivity.class));
         }
     }

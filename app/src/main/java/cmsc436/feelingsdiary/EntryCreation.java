@@ -65,6 +65,8 @@ public class EntryCreation extends AppCompatActivity implements Serializable {
 
                 sdf = new SimpleDateFormat("EEE, MMM dd, yyyy, h:mm a", Locale.US);
                 String entryDate = sdf.format(currentTime);
+
+                // We don't check the contents of the entry because it's optional
                 Entry entry = new Entry(
                         entryDate,
                         "" + (mSeekBar.getProgress() + 1),
