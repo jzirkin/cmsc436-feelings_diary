@@ -56,13 +56,5 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 });
             }
         });
-
-        Button mCancelButton = findViewById(R.id.forgot_pass_cancel);
-        mCancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
 }

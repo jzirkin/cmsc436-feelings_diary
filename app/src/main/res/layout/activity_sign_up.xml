@@ -97,13 +97,6 @@
                 android:text="@string/action_sign_up"
                 android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/cancel_button"
-                style="@android:style/TextAppearance.Material.Small"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/cancel" />
-
         </LinearLayout>
     </ScrollView>
 

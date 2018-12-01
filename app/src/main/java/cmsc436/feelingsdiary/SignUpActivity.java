@@ -74,14 +74,6 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-        Button mCancelButton = findViewById(R.id.cancel_button);
-        mCancelButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
         mSignUpFieldView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
