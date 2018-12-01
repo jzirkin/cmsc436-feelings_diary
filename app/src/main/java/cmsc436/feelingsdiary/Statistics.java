@@ -61,6 +61,10 @@ public class Statistics extends AppCompatActivity {
             finish();
         }
         mDatabaseRef = database.getReference(mUserID);
+
+        showProgress(true);
+        StatsTask task = new StatsTask();
+        task.execute();
     }
 
     /* Hides the UI and shows a spinning-loading bar while the AsyncTask is running */
@@ -120,13 +124,10 @@ public class Statistics extends AppCompatActivity {
             map.put(11, new ArrayList<Integer>());
             map.put(12, new ArrayList<Integer>());
 
-            CountDownLatch latch = new CountDownLatch(12);
+            CountDownLatch latch = new CountDownLatch(1);
 
-            for (int month = 1; month <= 12; month++) { // loop through each month
-                // loops through each day to get all ratings for all entries on all days in a month
-                getAllRatings(mDatabaseRef, map, latch); // ratings for all entries in a given month
-                averages[month - 1] = calculateAverage(map.get(month));
-            }
+            // loops through each day to get all ratings for all entries on all days in a month
+            getAllRatings(mDatabaseRef, map, latch); // ratings for all entries in a given month
 
             try {
                 latch.await();
@@ -195,7 +196,7 @@ public class Statistics extends AppCompatActivity {
         }
 
         /**
-         * TODO
+         * Gets all the ratings for all the months and puts them in the map in the respective months.
          * @param databaseRef
          * @param map
          * @return
@@ -211,11 +212,12 @@ public class Statistics extends AppCompatActivity {
                     for (DataSnapshot date : dataSnapshot.getChildren()) {
                         String temp = date.getKey();
                         if (temp != null) {
+                            // Date is always formatted the same so the month must be there
                             int month = Integer.parseInt(date.getKey().substring(0, 2));
                             for (DataSnapshot child : date.getChildren()) {
                                 Entry entry = child.getValue(Entry.class);
                                 if (entry != null) {
-                                    map.get(month).add(Integer.parseInt(entry.getRating())); // adds all ratings for the day
+                                    map.get(month).add(Integer.parseInt(entry.getRating())); // adds rating for the day
                                 }
                             }
                         }
@@ -230,7 +232,7 @@ public class Statistics extends AppCompatActivity {
             });
         }
 
-        // Calculates average (rating) in an arraylist
+        // Calculates average (rating) in a List
         private double calculateAverage(List<Integer> marks) {
             Integer sum = 0;
             if(!marks.isEmpty()) {
