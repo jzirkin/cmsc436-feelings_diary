@@ -1,6 +1,7 @@
 package cmsc436.feelingsdiary;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,23 @@ public class SearchListAdapter extends BaseAdapter {
             holder.message.setText(context.getString(R.string.message) + entry.getEntry().substring(0, 26) + "...");
         } else {
             holder.message.setText(context.getString(R.string.message) + entry.getEntry());
+        }
+
+        // Changing color of entry result based on the mood
+
+        int rating = Integer.parseInt(entry.getRating());
+        if (rating >= 4) {
+            holder.datetime.setTextColor(Color.parseColor("#88D7BF"));
+            holder.message.setTextColor(Color.parseColor("#88D7BF"));
+            holder.moodRating.setTextColor(Color.parseColor("#88D7BF"));
+        } else if (rating > 2) {
+            holder.datetime.setTextColor(Color.parseColor("#EEC964"));
+            holder.message.setTextColor(Color.parseColor("#EEC964"));
+            holder.moodRating.setTextColor(Color.parseColor("#EEC964"));
+        } else {
+            holder.datetime.setTextColor(Color.parseColor("#D06A74"));
+            holder.message.setTextColor(Color.parseColor("#D06A74"));
+            holder.moodRating.setTextColor(Color.parseColor("#D06A74"));
         }
 
         return newView;

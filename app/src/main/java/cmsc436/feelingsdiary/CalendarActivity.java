@@ -1,7 +1,10 @@
 package cmsc436.feelingsdiary;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.content.Context;
 import android.location.LocationProvider;
+import android.view.ViewGroup;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,6 +32,26 @@ import java.util.Date;
 import java.util.Locale;
 
 public class CalendarActivity extends AppCompatActivity {
+
+    // Adapter for entry list modified so that the background color changes according to the mood rating.
+    private class MyAdapter extends ArrayAdapter {
+        public MyAdapter(Context context, int resource, ArrayList objects) {
+            super(context, resource, objects);
+        }
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = super.getView(position, convertView, parent);
+            int rating = Integer.parseInt(mSelectedDateEntryList.get(position).getRating());
+            if (rating >= 4)
+                view.setBackgroundColor(Color.parseColor("#88D7BF"));
+            else if (rating > 2)
+                view.setBackgroundColor(Color.parseColor("#EEC964"));
+            else
+                view.setBackgroundColor(Color.parseColor("#D06A74"));
+
+            return view;
+        }
+    }
 
     private String mUserID;
     private ListView mEntryListView;
@@ -161,9 +184,10 @@ public class CalendarActivity extends AppCompatActivity {
                             message += entry.getEntry();
                         }
                         entryTimeList.add(getTime(entry.getDate()) + message);
+
                     }
 
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(CalendarActivity.this,
+                    ArrayAdapter<String> adapter = new MyAdapter(CalendarActivity.this,
                             android.R.layout.simple_list_item_1, entryTimeList);
 
                     for (String time : entryTimeList) {
@@ -223,7 +247,7 @@ public class CalendarActivity extends AppCompatActivity {
     private void clearEntryList() {
         mSelectedDateEntryList.clear();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(CalendarActivity.this,
+        ArrayAdapter<String> adapter = new MyAdapter(CalendarActivity.this,
                 android.R.layout.simple_list_item_1, new ArrayList<String>());
 
         mEntryListView.setAdapter(adapter);
