@@ -31,6 +31,9 @@
         <activity android:name=".ForgotPasswordActivity" />
         <activity android:name=".EntryCreation" />
         <activity android:name=".MainActivity" />
+        <activity android:name=".SettingsActivity" />
+
+
         <activity
             android:name=".SearchActivity"
             android:windowSoftInputMode="adjustPan">
