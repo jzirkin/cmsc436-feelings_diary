@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -80,7 +82,30 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void openSettingsMenu(View v){
+    //Creates a menu in the toolbar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if(super.onCreateOptionsMenu(menu)){
+            getMenuInflater().inflate(R.menu.main_menu, menu);
+            return true;
+        }
+        return false;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.settings_menu:
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                return true;
+            case R.id.logout_menu:
+                FirebaseAuth.getInstance().signOut();
+                // remove the user id from sharedpreferences
+                getSharedPreferences("feelingsdiary", MODE_PRIVATE).edit().putString("uid", null).apply();
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
