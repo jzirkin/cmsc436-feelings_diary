@@ -53,7 +53,8 @@
     <string name="frequency_weekly">Weekly</string>
     <string name="frequency_never">Never</string>
     <string name="save_notification_frequency">Save Notification Frequency</string>
-
+    <string name="restart_app">You must restart the app for this change to go into effect.</string>
+    <string name="saved">Saved!</string>
     <string name="change_password">Change Password</string>
 
     <!-- Strings related to password reset -->

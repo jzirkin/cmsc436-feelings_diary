@@ -34,9 +34,8 @@ import java.util.concurrent.CountDownLatch;
 * a few seconds. */
 public class LoginActivity extends AppCompatActivity {
 
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
+    private final long TWELVE_PM = 43200000;
+
     private UserLoginTask mAuthTask = null;
 
     // UI references.
@@ -70,9 +69,11 @@ public class LoginActivity extends AppCompatActivity {
                     PendingIntent.FLAG_UPDATE_CURRENT);
 
             // set alarm to send out intent every day
+            // inexact because the notification isn't urgent - it's not necessary that it happens every day
+            long time = getSharedPreferences("feelingsdiary", MODE_PRIVATE).getLong("notificationtime", TWELVE_PM);
             mAlarmManager.setInexactRepeating(
                     AlarmManager.RTC_WAKEUP,
-                    AlarmManager.INTERVAL_DAY,
+                    AlarmManager.INTERVAL_DAY + time,
                     AlarmManager.INTERVAL_DAY,
                     pendingIntent
             );

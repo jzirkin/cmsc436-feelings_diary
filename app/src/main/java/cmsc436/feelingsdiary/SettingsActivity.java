@@ -1,5 +1,6 @@
 package cmsc436.feelingsdiary;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +11,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -37,15 +37,21 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        final SharedPreferences prefs = getSharedPreferences("feelingsdiary", MODE_PRIVATE);
 
         //Allows the user to set the notification frequency
+
+        // Checks the button that is the current setting
         mFrequencyGroup = findViewById(R.id.frequency_group);
+        mFrequencyGroup.check(mFrequencyGroup.getChildAt(prefs.getInt("notificationsetting", 0)).getId());
+
         mSaveNotificationFrequency = findViewById(R.id.save_notification_frequency_btn);
         mSaveNotificationFrequency.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 RadioButton selected = findViewById(mFrequencyGroup.getCheckedRadioButtonId());
-                //TODO set shared preference to selected value.
+                prefs.edit().putInt("notificationsetting", mFrequencyGroup.indexOfChild(selected)).apply();
+                Toast.makeText(SettingsActivity.this, getString(R.string.saved), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -55,10 +61,12 @@ public class SettingsActivity extends AppCompatActivity {
         mSaveNotificationTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO Set the notification to appear at this time
-                int hour = mTimePicker.getHour();
-                int minute = mTimePicker.getMinute();
+                long hour = mTimePicker.getHour() * 3600000;
+                long minute = mTimePicker.getMinute() * 60000;
 
+                prefs.edit().putLong("notificationtime", hour + minute).apply();
+
+                Toast.makeText(SettingsActivity.this, getString(R.string.restart_app), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -72,17 +80,15 @@ public class SettingsActivity extends AppCompatActivity {
                 String passwordText = mPasswordText.getText().toString();
                 String confirmText = mConfirmText.getText().toString();
                 if(!isPasswordValid(passwordText)){
-                    Toast.makeText(getApplicationContext(), R.string.error_invalid_password, Toast.LENGTH_SHORT).show();
-                }
-                else if(!passwordText.equals(confirmText)){
-                    Toast.makeText(getApplicationContext(), R.string.error_passwords_dont_match, Toast.LENGTH_SHORT).show();
-                }
-                else{
+                    mPasswordText.setError(getString(R.string.error_invalid_password));
+                } else if (!passwordText.equals(confirmText)){
+                    mConfirmText.setError(getString(R.string.error_passwords_dont_match));
+                } else {
                     if(mAuth.getCurrentUser() != null){
                         mAuth.getCurrentUser().updatePassword(passwordText);
                     }
                 }
-
+                Toast.makeText(SettingsActivity.this, getString(R.string.saved), Toast.LENGTH_SHORT).show();
             }
         });
 

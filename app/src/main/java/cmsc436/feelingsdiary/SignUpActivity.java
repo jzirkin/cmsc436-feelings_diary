@@ -156,7 +156,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private boolean isPasswordValid(String password) {
         return (password.length() > 5) &&
-                (password.matches(".*[1-9].*"));
+                (password.matches(".*[0-9].*"));
     }
 
     private boolean isEmailValid(String email) {

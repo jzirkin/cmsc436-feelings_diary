@@ -1,6 +1,5 @@
 package cmsc436.feelingsdiary;
 
-import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;

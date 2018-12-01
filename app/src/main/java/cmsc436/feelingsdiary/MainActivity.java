@@ -1,6 +1,7 @@
 package cmsc436.feelingsdiary;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -51,15 +52,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, SearchActivity.class));
             }
         });
-
-        findViewById(R.id.sign_out).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // sign out
-                FirebaseAuth.getInstance().signOut();
-                finish();
-            }
-        });
     }
 
     @Override
@@ -101,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.logout_menu:
                 FirebaseAuth.getInstance().signOut();
                 // remove the user id from sharedpreferences
-                getSharedPreferences("feelingsdiary", MODE_PRIVATE).edit().putString("uid", null).apply();
                 finish();
                 return true;
             default:
