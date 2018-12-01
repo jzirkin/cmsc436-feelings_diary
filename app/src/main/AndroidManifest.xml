@@ -33,20 +33,17 @@
         <activity android:name=".MainActivity" />
         <activity
             android:name=".SearchActivity"
-            android:windowSoftInputMode="adjustPan">
-        </activity>
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".ViewEntryActivity"
-            android:label="@string/diary_entry_label">
-        </activity>
+            android:label="@string/diary_entry_label"></activity>
 
         <receiver android:name=".NotificationReminderReceiver" />
 
         <activity
             android:name=".CalendarActivity"
-            android:label="@string/calendar_vew_label">
-        </activity>
-
+            android:label="@string/calendar_vew_label"></activity>
+        <activity android:name=".Statistics"></activity>
     </application>
 
 </manifest>

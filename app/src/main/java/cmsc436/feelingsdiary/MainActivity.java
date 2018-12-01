@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         mStatsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(MainActivity.this, StatsActivity.class)); //TODO: Add class for stats activity
+                startActivity(new Intent(MainActivity.this, Statistics.class)); //TODO: Add class for stats activity
             }
         });
 
