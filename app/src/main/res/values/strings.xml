@@ -31,6 +31,8 @@
     <string name="text">How are you doing today?</string>
     <string name="hint">Today, I…</string>
     <string name="submit">Submit</string>
+    <string name="tags">Enter any tags separated by commas here:</string>
+    <string name="message_text">Message:</string>
 
     <!-- Strings related to Main -->
     <string name="add_new_entry">New Entry</string>
@@ -92,6 +94,7 @@
     <string name="datetime">Date and Time: </string>
     <string name="mood_rating">Mood: </string>
     <string name="message">Message: </string>
+    <string name="tags_string">Tags: </string>
 
     <!-- Strings related to the CalendarActivity -->
     <string name="calendar_vew_label">Select a Date to View Entries</string>

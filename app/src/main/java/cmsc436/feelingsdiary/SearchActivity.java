@@ -219,7 +219,20 @@ public class SearchActivity extends AppCompatActivity {
                             if (message != null && message.toLowerCase().contains(keyword.toLowerCase())) {
                                 String datetime = (String) data.child("date").getValue();
                                 String mood = (String) data.child("rating").getValue();
-                                list.add(new Entry(datetime, mood, message));
+                                List<String> tags = (List<String>) data.child("tags").getValue();
+                                list.add(new Entry(datetime, mood, message, tags));
+                            } else {
+                                if (data.child("tags").getValue() != null) {
+                                    for (String tag : (List<String>) data.child("tags").getValue()) {
+                                        if (tag != null && tag.toLowerCase().contains(keyword.toLowerCase())) {
+                                            String datetime = (String) data.child("date").getValue();
+                                            String mood = (String) data.child("rating").getValue();
+                                            List<String> tags = (List<String>) data.child("tags").getValue();
+                                            list.add(new Entry(datetime, mood, message, tags));
+                                            break;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

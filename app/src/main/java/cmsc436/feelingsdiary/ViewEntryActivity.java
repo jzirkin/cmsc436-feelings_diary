@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class ViewEntryActivity extends AppCompatActivity {
@@ -30,6 +31,7 @@ public class ViewEntryActivity extends AppCompatActivity {
     RatingBar mMoodRating;
     TextView mLocationText;
     TextView mThoughtsText;
+    TextView mTags;
 
     Entry mEntry;
 
@@ -55,12 +57,23 @@ public class ViewEntryActivity extends AppCompatActivity {
         mMoodRating = findViewById(R.id.mood_scale);
         mLocationText = findViewById(R.id.recorded_location);
         mThoughtsText = findViewById(R.id.recorded_thoughts);
-
+        mTags = findViewById(R.id.recorded_tags);
         mEntry = (Entry) getIntent().getSerializableExtra("entry");
 
         mDateText.setText(mEntry.getDate());
         mMoodRating.setRating(Float.parseFloat(mEntry.getRating()));
         mLocationText.setText("No implemented yet");
+        List<String> tags = mEntry.getTags();
+        StringBuilder tag;
+        if (tags == null) {
+            tag = new StringBuilder("None");
+        } else {
+            tag = new StringBuilder(tags.get(0).trim());
+            for (int i = 1; i < tags.size(); i++) {
+                tag.append(", ").append(tags.get(i).trim());
+            }
+        }
+        mTags.setText(tag);
         mThoughtsText.setText(mEntry.getEntry());
 
         final DatabaseReference databaseDateRef = databaseRef.child(getDate(mEntry.getDate()));

@@ -53,6 +53,7 @@ public class SearchListAdapter extends BaseAdapter {
             holder.datetime = newView.findViewById(R.id.datetime);
             holder.moodRating = newView.findViewById(R.id.mood);
             holder.message = newView.findViewById(R.id.message_string);
+            holder.tags = newView.findViewById(R.id.tags_string);
             newView.setTag(holder);
         } else {
             holder = (ViewHolder) newView.getTag();
@@ -61,6 +62,23 @@ public class SearchListAdapter extends BaseAdapter {
         // Set appropriate data in the View
         holder.datetime.setText(context.getString(R.string.datetime) + entry.getDate());
         holder.moodRating.setText(context.getString(R.string.mood_rating) + entry.getRating());
+
+        List<String> tags = entry.getTags();
+        StringBuilder tag;
+        if (tags == null) {
+            tag = new StringBuilder("None");
+        } else {
+            tag = new StringBuilder(tags.get(0).trim());
+            for (int i = 1; i < tags.size(); i++) {
+                tag.append(", ").append(tags.get(i).trim());
+            }
+        }
+        if (tag.length() > 26) {
+            holder.tags.setText(context.getString(R.string.tags_string) + tag.substring(0, 26) + "...");
+        } else {
+            holder.tags.setText(context.getString(R.string.tags_string) + tag);
+        }
+
         if (entry.getEntry().length() == 0) {
             holder.message.setText(context.getString(R.string.message) + "None");
         } else if (entry.getEntry().length() > 26) {
@@ -76,14 +94,17 @@ public class SearchListAdapter extends BaseAdapter {
             holder.datetime.setTextColor(Color.parseColor("#88D7BF"));
             holder.message.setTextColor(Color.parseColor("#88D7BF"));
             holder.moodRating.setTextColor(Color.parseColor("#88D7BF"));
+            holder.tags.setTextColor(Color.parseColor("#88D7BF"));
         } else if (rating > 2) {
             holder.datetime.setTextColor(Color.parseColor("#EEC964"));
             holder.message.setTextColor(Color.parseColor("#EEC964"));
             holder.moodRating.setTextColor(Color.parseColor("#EEC964"));
+            holder.tags.setTextColor(Color.parseColor("#EEC964"));
         } else {
             holder.datetime.setTextColor(Color.parseColor("#D06A74"));
             holder.message.setTextColor(Color.parseColor("#D06A74"));
             holder.moodRating.setTextColor(Color.parseColor("#D06A74"));
+            holder.tags.setTextColor(Color.parseColor("#D06A74"));
         }
 
         return newView;
@@ -94,6 +115,7 @@ public class SearchListAdapter extends BaseAdapter {
         TextView datetime;
         TextView moodRating;
         TextView message;
+        TextView tags;
     }
 
     public void clearList() {

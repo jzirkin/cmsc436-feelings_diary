@@ -19,10 +19,18 @@
         android:textAppearance="?android:attr/textAppearanceSmall"/>
 
     <TextView
-        android:id="@+id/message_string"
+        android:id="@+id/tags_string"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/mood"
+        android:text="@string/tags_string"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+    <TextView
+        android:id="@+id/message_string"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tags_string"
         android:text="@string/message"
         android:textAppearance="?android:attr/textAppearanceSmall"/>
 </RelativeLayout>

@@ -15,6 +15,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -25,6 +27,7 @@ public class EntryCreation extends AppCompatActivity implements Serializable {
 
     private TextView mTextMessage;
     private SeekBar mSeekBar;
+    private TextView mTags;
     private String userID;
 
     @Override
@@ -35,6 +38,7 @@ public class EntryCreation extends AppCompatActivity implements Serializable {
         mTextMessage = findViewById(R.id.entry);
         Button mSubmitButton = findViewById(R.id.button);
         mSeekBar = findViewById(R.id.seekBar);
+        mTags = findViewById(R.id.tags);
 
         // If there is not a user currently logged in, get out
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -64,7 +68,8 @@ public class EntryCreation extends AppCompatActivity implements Serializable {
                 Entry entry = new Entry(
                         entryDate,
                         "" + (mSeekBar.getProgress() + 1),
-                        mTextMessage.getText().toString());
+                        mTextMessage.getText().toString(),
+                        Arrays.asList(mTags.getText().toString().split(",")));
                 databaseRef.setValue(entry);
 
                 // For notifications - reset the counter for entries
