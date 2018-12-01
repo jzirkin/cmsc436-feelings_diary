@@ -1,12 +1,11 @@
 package cmsc436.feelingsdiary;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
@@ -76,8 +75,10 @@ public class ViewEntryActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 deleteEntry(databaseDateRef, mEntry);
 
-                // Tells the CalendarActivity to update the Entry list for this date
-                setResult(RESULT_DELETED_ENTRY, null);
+                // Tells the CalendarActivity/SearchActivity to update the Entry list for this date
+                Intent intent = new Intent();
+                intent.putExtra("keyword", getIntent().getStringExtra("keyword"));
+                setResult(RESULT_DELETED_ENTRY, intent);
                 finish();
             }
         });

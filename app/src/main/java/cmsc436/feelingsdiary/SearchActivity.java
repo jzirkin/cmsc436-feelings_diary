@@ -36,6 +36,8 @@ import java.util.concurrent.CountDownLatch;
  */
 public class SearchActivity extends AppCompatActivity {
 
+    private final int RESULT_DELETED_ENTRY = 2;
+
     private EditText mSearchInput;
     private Button mSearchButton;
     private LinearLayout mSearchLayout;
@@ -88,7 +90,7 @@ public class SearchActivity extends AppCompatActivity {
                     // Otherwise start the search
                     } else {
                         task = new SearchTask(keyword);
-                        task.execute((Void) null);
+                        task.execute();
                     }
                 }
             }
@@ -108,8 +110,8 @@ public class SearchActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(SearchActivity.this, ViewEntryActivity.class);
                 intent.putExtra("entry", (Entry) mAdapter.getItem(position));
-                intent.putExtra("userID", uID);
-                startActivity(intent);
+                intent.putExtra("keyword", mSearchInput.getText().toString());
+                startActivityForResult(intent, 0);
             }
         });
         mResultsList.setAdapter(mAdapter);
@@ -137,6 +139,17 @@ public class SearchActivity extends AppCompatActivity {
         mAdapter.clearList();
         mAdapter.addList(entries);
         mSearchLayout.addView(mResultsList);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // If the previously viewed Entry was deleted, the list of entries has to be refreshed
+        if (resultCode == RESULT_DELETED_ENTRY) {
+            SearchTask task = new SearchTask(data.getStringExtra("keyword"));
+            task.execute();
+        }
     }
 
     // Same as in LoginActivity but smaller and only hides mSearchLayout, not everything
@@ -185,6 +198,10 @@ public class SearchActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
+
+            if (keyword == null) {
+                return false;
+            }
 
             // CountDownLatch so we wait for the search do be done before finishing
             final CountDownLatch latch = new CountDownLatch(1);

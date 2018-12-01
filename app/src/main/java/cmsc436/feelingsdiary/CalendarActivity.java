@@ -164,7 +164,7 @@ public class CalendarActivity extends AppCompatActivity {
          * Retrieve the diary Entry objects at the selected date and add them to the
          * entries list.
          */
-        databaseDateRef.addValueEventListener(new ValueEventListener() {
+        databaseDateRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Iterates through each entry at the specified date

@@ -1,9 +1,17 @@
 package cmsc436.feelingsdiary;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseArray;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -25,12 +33,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 
 public class Statistics extends AppCompatActivity {
     private String mUserID;
     private DatabaseReference mDatabaseRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +52,6 @@ public class Statistics extends AppCompatActivity {
         /**
          * The code below generates a vertical bar chart with the average rating for all entries monthly in the current year.
          */
-
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -49,148 +61,185 @@ public class Statistics extends AppCompatActivity {
             finish();
         }
         mDatabaseRef = database.getReference(mUserID);
-
-        // avg ratings of all entries from each month
-        int jan=0, feb=0, mar=0, apr=0, may=0, jun=0, jul=0, aug=0, sep=0, oct=0, nov=0, dec=0;
-
-        int year = Calendar.getInstance().get(Calendar.YEAR);
-
-        for (int month = 1; month <= 12; month++) { // loop through each month
-            ArrayList<Integer> temp = new ArrayList<>(); // all ratings in the month
-            // loops through each day to get all ratings for all entries on all days in a month
-            for (int day = 1; day <= 31; day++) {
-                ArrayList<Integer> ratings = getAllRatings(mDatabaseRef, year, month, day); // ratings for all entries in a given day
-                temp.addAll(ratings); // continuously merges all daily ratings with temp (monthly ratings)
-            }
-            int average = (int) calculateAverage(temp); // calculating average monthly rating
-            if (month == 1) jan = average;
-            if (month == 2) feb = average;
-            if (month == 3) mar = average;
-            if (month == 4) apr = average;
-            if (month == 5) may = average;
-            if (month == 6) jun = average;
-            if (month == 7) jul = average;
-            if (month == 8) aug = average;
-            if (month == 9) sep = average;
-            if (month == 10) oct = average;
-            if (month == 11) nov = average;
-            if (month == 12) dec = average;
-        }
-
-        // adding entries for average ratings per month
-        HorizontalBarChart barChart = (HorizontalBarChart) findViewById(R.id.barchart);
-        ArrayList<BarEntry> bargroup1 = new ArrayList<>();
-        bargroup1.add(new BarEntry(jan, 0));
-        bargroup1.add(new BarEntry(feb, 1));
-        bargroup1.add(new BarEntry(mar, 2));
-        bargroup1.add(new BarEntry(apr, 3));
-        bargroup1.add(new BarEntry(may, 4));
-        bargroup1.add(new BarEntry(jun, 5));
-        bargroup1.add(new BarEntry(jul, 6));
-        bargroup1.add(new BarEntry(aug, 7));
-        bargroup1.add(new BarEntry(sep, 8));
-        bargroup1.add(new BarEntry(oct, 9));
-        bargroup1.add(new BarEntry(nov, 10));
-        bargroup1.add(new BarEntry(3, 11)); // replace with dec later
-
-        // creating dataset for Bar Group 1
-        BarDataSet barDataSet1 = new BarDataSet(bargroup1, "Average Monthly Ratings");
-        barDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
-
-        // Creating the labels
-        ArrayList<String> labels = new ArrayList<String>();
-        labels.add("January");
-        labels.add("February");
-        labels.add("March");
-        labels.add("April");
-        labels.add("May");
-        labels.add("June");
-        labels.add("July");
-        labels.add("August");
-        labels.add("September");
-        labels.add("October");
-        labels.add("November");
-        labels.add("December");
-
-        // combine all dataset into an arraylist
-        ArrayList<BarDataSet> dataSets = new ArrayList<>();
-        dataSets.add(barDataSet1);
-
-        // initialize the Bardata with argument labels and dataSet
-        BarData data = new BarData(labels, dataSets);
-        barChart.setData(data);
     }
 
-    /**
-     * This function is supposed to return an ArrayList with all ratings from all entries on a given day.
-     * @param databaseRef
-     * @param year
-     * @param month
-     * @param dayOfMonth
-     * @return
-     */
-    private ArrayList<Integer> getAllRatings(DatabaseReference databaseRef, int year, int month, int dayOfMonth) {
-        DatabaseReference databaseDateRef = databaseRef.child(formatDate(year, month, dayOfMonth));
-        final ArrayList<Entry> mSelectedDateEntryList = new ArrayList<>(); // all ratings for all entries on the day
-        final ArrayList<Integer> mSelectedDateRatingsList = new ArrayList<>();
+    /* Hides the UI and shows a spinning-loading bar while the AsyncTask is running */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        final View barchartView = findViewById(R.id.barchart);
+        final View progressView = findViewById(R.id.login_progress);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-        /*
-         * Retrieve the diary ratings from Entry objects at the selected date and add them to the
-         * ratings list.
+            barchartView.setVisibility(show ? View.GONE : View.VISIBLE);
+            barchartView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    barchartView.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            progressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            barchartView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
+    }
+
+    private class StatsTask extends AsyncTask<Void, Void, Void> {
+
+        double[] averages = new double[12];
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            // avg ratings of all entries from each month
+            SparseArray<List<Integer>> map = new SparseArray<>();
+            map.put(1, new ArrayList<Integer>());
+            map.put(2, new ArrayList<Integer>());
+            map.put(3, new ArrayList<Integer>());
+            map.put(4, new ArrayList<Integer>());
+            map.put(5, new ArrayList<Integer>());
+            map.put(6, new ArrayList<Integer>());
+            map.put(7, new ArrayList<Integer>());
+            map.put(8, new ArrayList<Integer>());
+            map.put(9, new ArrayList<Integer>());
+            map.put(10, new ArrayList<Integer>());
+            map.put(11, new ArrayList<Integer>());
+            map.put(12, new ArrayList<Integer>());
+
+            CountDownLatch latch = new CountDownLatch(12);
+
+            for (int month = 1; month <= 12; month++) { // loop through each month
+                // loops through each day to get all ratings for all entries on all days in a month
+                getAllRatings(mDatabaseRef, map, latch); // ratings for all entries in a given month
+                averages[month - 1] = calculateAverage(map.get(month));
+            }
+
+            try {
+                latch.await();
+            } catch (InterruptedException e) {
+                // do nothing
+            }
+
+            for (int month = 1; month <= 12; month++) { // loop through each month
+                averages[month - 1] = calculateAverage(map.get(month));
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(final Void nothing) {
+            // adding entries for average ratings per month
+            HorizontalBarChart barChart = findViewById(R.id.barchart);
+            ArrayList<BarEntry> bargroup1 = new ArrayList<>();
+            bargroup1.add(new BarEntry((int) averages[0], 0));
+            bargroup1.add(new BarEntry((int) averages[1], 1));
+            bargroup1.add(new BarEntry((int) averages[2], 2));
+            bargroup1.add(new BarEntry((int) averages[3], 3));
+            bargroup1.add(new BarEntry((int) averages[4], 4));
+            bargroup1.add(new BarEntry((int) averages[5], 5));
+            bargroup1.add(new BarEntry((int) averages[6], 6));
+            bargroup1.add(new BarEntry((int) averages[7], 7));
+            bargroup1.add(new BarEntry((int) averages[8], 8));
+            bargroup1.add(new BarEntry((int) averages[9], 9));
+            bargroup1.add(new BarEntry((int) averages[10], 10));
+            bargroup1.add(new BarEntry((int) averages[11], 11));
+
+            // creating dataset for Bar Group 1
+            BarDataSet barDataSet1 = new BarDataSet(bargroup1, "Average Monthly Ratings");
+            barDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
+
+            // Creating the labels
+            ArrayList<String> labels = new ArrayList<String>();
+            labels.add("January");
+            labels.add("February");
+            labels.add("March");
+            labels.add("April");
+            labels.add("May");
+            labels.add("June");
+            labels.add("July");
+            labels.add("August");
+            labels.add("September");
+            labels.add("October");
+            labels.add("November");
+            labels.add("December");
+
+            // combine all dataset into an arraylist
+            ArrayList<BarDataSet> dataSets = new ArrayList<>();
+            dataSets.add(barDataSet1);
+
+            // initialize the Bardata with argument labels and dataSet
+            BarData data = new BarData(labels, dataSets);
+            barChart.setData(data);
+
+            showProgress(false);
+        }
+
+        @Override
+        protected void onCancelled() {
+            showProgress(false);
+        }
+
+        /**
+         * TODO
+         * @param databaseRef
+         * @param map
+         * @return
          */
-        databaseDateRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Iterates through each entry at the specified date
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    mSelectedDateEntryList.add(child.getValue(Entry.class)); // adds all ratings for the day
+        private void getAllRatings(DatabaseReference databaseRef, final SparseArray<List<Integer>> map, final CountDownLatch latch) {
+            /*
+             * Retrieve the diary ratings from Entry objects at the selected date and add them to the
+             * ratings list.
+             */
+            databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot date : dataSnapshot.getChildren()) {
+                        String temp = date.getKey();
+                        if (temp != null) {
+                            int month = Integer.parseInt(date.getKey().substring(0, 2));
+                            for (DataSnapshot child : date.getChildren()) {
+                                Entry entry = child.getValue(Entry.class);
+                                if (entry != null) {
+                                    map.get(month).add(Integer.parseInt(entry.getRating())); // adds all ratings for the day
+                                }
+                            }
+                        }
+                    }
+                    latch.countDown();
                 }
-                for (Entry entry : mSelectedDateEntryList) {
-                    mSelectedDateRatingsList.add(Integer.parseInt(entry.getRating()));
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // ...
                 }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // ...
-            }
-        });
-
-        return mSelectedDateRatingsList;
-    }
-
-    /**
-     * Creates a properly formatted date String from the given date information.
-     *
-     * @param year       Year in the form yyyy
-     * @param month      Month in range 0-11.
-     * @param dayOfMonth Day of the month
-     * @return The specified date in the form MM-dd-yy
-     */
-    private String formatDate(int year, int month, int dayOfMonth) {
-        String dateStr = (month + 1) + "-" + dayOfMonth + "-" + year;
-        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yy", Locale.US);
-        Date date = null;
-
-        try {
-            date = sdf.parse(dateStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
+            });
         }
 
-        return sdf.format(date);
-    }
-
-
-    // Calculates average (rating) in an arraylist
-    private double calculateAverage(ArrayList<Integer> marks) {
-        Integer sum = 0;
-        if(!marks.isEmpty()) {
-            for (Integer mark : marks) {
-                sum += mark;
+        // Calculates average (rating) in an arraylist
+        private double calculateAverage(List<Integer> marks) {
+            Integer sum = 0;
+            if(!marks.isEmpty()) {
+                for (Integer mark : marks) {
+                    sum += mark;
+                }
+                return (sum.doubleValue() / marks.size());
             }
-            return (sum.doubleValue() / marks.size());
+            return sum;
         }
-        return sum;
     }
 }
