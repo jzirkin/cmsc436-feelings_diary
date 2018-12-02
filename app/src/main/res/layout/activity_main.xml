@@ -1,68 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@drawable/ic_background_main"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:id="@+id/logo_date"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_width="match_parent"
+        android:layout_marginTop="50dp">
+
+        <ImageView
+            android:id="@+id/green_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_circle_green"/>
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/myImageViewText"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/menu_welcome"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
-
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/green_background"
+            android:layout_alignTop="@id/green_background"
+            android:layout_alignRight="@id/green_background"
+            android:layout_alignBottom="@id/green_background"
+            android:layout_margin="1dp"
+            android:gravity="center"
+            android:text="@string/day"
+            android:textSize="48sp"
+            android:textColor="@color/white" />
+    </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/toolbar"
+        android:layout_below="@id/logo_date"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center|bottom" >
 
-
-        <Button
+        <ImageButton
             android:id="@+id/add_entry_button"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:contentDescription="@string/add_new_entry"
+            android:layout_width="62dp"
+            android:layout_height="62dp"
+            android:layout_margin="@dimen/activity_horizontal_margin"
             android:layout_weight="1"
-            android:text="@string/add_new_entry" />
+            android:background="@drawable/ic_add"/>
 
-        <Button
+        <ImageButton
             android:id="@+id/stats_button"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:contentDescription="@string/view_stats"
+            android:layout_width="62dp"
+            android:layout_height="62dp"
+            android:layout_margin="@dimen/activity_horizontal_margin"
             android:layout_weight="1"
-            android:text="@string/view_stats" />
-    </LinearLayout>
+            android:background="@drawable/ic_statistics" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
+        <ImageButton
             android:id="@+id/calendar_button"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:contentDescription="@string/calendar_vew_label"
+            android:layout_width="62dp"
+            android:layout_height="62dp"
+            android:layout_margin="@dimen/activity_horizontal_margin"
             android:layout_weight="1"
-            android:text="@string/view_calendar" />
+            android:background="@drawable/ic_calendar" />
 
-        <Button
+        <ImageButton
             android:id="@+id/search_button"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:contentDescription="@string/search_button"
+            android:layout_width="62dp"
+            android:layout_height="62dp"
+            android:layout_margin="@dimen/activity_horizontal_margin"
             android:layout_weight="1"
-            android:text="@string/view_search" />
+            android:background="@drawable/ic_search"/>
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/ic_background"
+    android:background="@drawable/ic_background_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
@@ -21,17 +21,13 @@
         android:layout_marginBottom="8dp"
         android:visibility="gone" />
 
-    <ScrollView
-        android:id="@+id/login_form"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true">
-
         <RelativeLayout
             android:id="@+id/email_login_form"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:gravity="center">
 
             <ImageView
                 android:id="@+id/logo"
@@ -40,6 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:src="@drawable/ic_logo"
+                android:layout_marginBottom="30dp"
                 />
 
             <android.support.design.widget.TextInputLayout
@@ -59,7 +56,8 @@
                     android:inputType="text"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:theme="@style/EditTextTheme"/>
+                    android:theme="@style/EditTextTheme"
+                    android:layout_marginBottom="10dp"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -83,7 +81,8 @@
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:theme="@style/EditTextTheme"/>
+                    android:theme="@style/EditTextTheme"
+                    android:layout_marginBottom="10dp"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -91,7 +90,7 @@
                 android:id="@+id/confirm_password_input"
                 android:layout_below="@id/password_input_id"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:textColorHint="@color/white">
 
                 <EditText
@@ -107,7 +106,8 @@
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:theme="@style/EditTextTheme"/>
+                    android:theme="@style/EditTextTheme"
+                    android:layout_marginBottom="10dp"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -125,6 +125,5 @@
                 android:textStyle="bold" />
 
         </RelativeLayout>
-    </ScrollView>
 
 </RelativeLayout>

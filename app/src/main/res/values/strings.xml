@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Feelings Diary</string>
+    <string name="app_name">m.io</string>
 
     <!-- Strings related to login -->
     <string name="title_activity_login">Log in</string>
@@ -35,6 +35,7 @@
     <string name="message_text">Message:</string>
 
     <!-- Strings related to Main -->
+    <string name="day">D A Y\n 0 1</string>
     <string name="add_new_entry">New Entry</string>
     <string name="view_stats">Stats</string>
     <string name="view_calendar">Calendar</string>

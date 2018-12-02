@@ -47,11 +47,11 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="height" value="250" />
-                            <entry key="outputName" value="ic_logo" />
+                            <entry key="height" value="640" />
+                            <entry key="outputName" value="ic_background_main" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\KK\Downloads\Group 2.svg" />
-                            <entry key="width" value="250" />
+                            <entry key="sourceFile" value="C:\Users\KK\Downloads\mainempty.svg" />
+                            <entry key="width" value="360" />
                           </map>
                         </option>
                       </PersistentState>

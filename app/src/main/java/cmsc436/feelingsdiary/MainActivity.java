@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button mAddEntryButton = findViewById(R.id.add_entry_button);
+        ImageButton mAddEntryButton = findViewById(R.id.add_entry_button);
         mAddEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button mStatsButton = findViewById(R.id.stats_button);
+        ImageButton mStatsButton = findViewById(R.id.stats_button);
         mStatsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button mCalendarButton = findViewById(R.id.calendar_button);
+        ImageButton mCalendarButton = findViewById(R.id.calendar_button);
         mCalendarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button mRecentEntryButton = findViewById(R.id.search_button);
+        ImageButton mRecentEntryButton = findViewById(R.id.search_button);
         mRecentEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -74,7 +74,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-        mSignUpFieldView = findViewById(R.id.login_form);
+        mSignUpFieldView = findViewById(R.id.email_login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
 
