@@ -96,7 +96,10 @@ no <html><head></head><body><header><title>Mood.io</title></header>
 		Activity after the log in screen detects that a user is not currently logged in, the app will keep popping Activities off the backstack until the log in screen is reached. This
 		means we should never encounter a scenario where a user is not logged in, but is still able to access someone's entries. <br/> <br/>
 
-		TODO - Configuration Changes
+		<b>Configuration Changes</b> <br/>
+		Configuration changes were considered when designing the app. In regards to the UI, most seemed Activities seemed to translate well to landscape. However, a few did need special
+		landscape layouts. Functionality wise, the app works the same in landscape, as it should. The AsyncTasks were an issue when considering reconfiguration changes. Since none of our
+		operations take a very long time, we decided that it was okay if AsyncTasks simply cancel if it is running during a reconfiguation change.
     </td>
   </tr>
   <tr>
