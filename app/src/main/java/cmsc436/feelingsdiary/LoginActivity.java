@@ -44,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
     private View mProgressView;
     private View mLoginFormView;
     private TextView mForgotPasswordView;
+    private TextView mSignUpView;
 
     private AlarmManager mAlarmManager;
 
@@ -113,8 +114,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        Button mGoToSignUp = findViewById(R.id.sign_up_button);
-        mGoToSignUp.setOnClickListener(new OnClickListener() {
+        mSignUpView = findViewById(R.id.sign_up_link);
+        mSignUpView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this, SignUpActivity.class));

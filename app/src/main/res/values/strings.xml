@@ -11,9 +11,9 @@
         Passwords must be greater than 5 characters and must contain an uppercase and special character.</string>
     <string name="error_incorrect_password">This password did not match an existing email.</string>
     <string name="error_field_required">This field is required.</string>
-    <string name="sign_up_text_field">Don\'t have an account? Sign up below.</string>
+    <string name="sign_up_text_field">Don\'t have an account? Sign up <u>here</u>.</string>
     <string name="action_sign_up">Sign Up</string>
-    <string name="forgot_password"><u>Forgot your password? Click here to reset it.</u></string>
+    <string name="forgot_password"><u>Forgot your password?</u></string>
 
     <!-- Strings related to sign up -->
     <string name="title_activity_sign_up">Sign up</string>
