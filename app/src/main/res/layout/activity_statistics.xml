@@ -15,12 +15,10 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.github.mikephil.charting.charts.BarChart
+            <com.jjoe64.graphview.GraphView
                 android:id="@+id/barchart"
                 android:layout_width="match_parent"
-                android:layout_height="520dp">
-
-            </com.github.mikephil.charting.charts.BarChart>
+                android:layout_height="520dp" />
 
             <net.alhazmy13.wordcloud.WordCloudView
                 android:id="@+id/wordCloud"
