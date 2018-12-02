@@ -3,17 +3,15 @@ package cmsc436.feelingsdiary;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.data.BarData;
@@ -28,19 +26,26 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import net.alhazmy13.wordcloud.WordCloud;
+import net.alhazmy13.wordcloud.WordCloudView;
+
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
 
 public class Statistics extends AppCompatActivity {
+
+    private final static int PURPLE = 0x800080;
+    private final static int OLIVE = 0x808000;
+    private final static int MAROON = 0x741A31;
+    private final static int DARKBLUE = 0x1E1844;
+    private final static int TAN = 0xD2C378;
+    private final static int DARKGREEN = 0x003D00;
+    private final static int LIGHTGRAY = 0x9EA19D;
+
+
     private String mUserID;
     private DatabaseReference mDatabaseRef;
 
@@ -106,6 +111,7 @@ public class Statistics extends AppCompatActivity {
     private class StatsTask extends AsyncTask<Void, Void, Void> {
 
         double[] averages = new double[12];
+        HashMap<String, Integer> wordMap = new HashMap<>();
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -127,7 +133,7 @@ public class Statistics extends AppCompatActivity {
             CountDownLatch latch = new CountDownLatch(1);
 
             // loops through each day to get all ratings for all entries on all days in a month
-            getAllRatings(mDatabaseRef, map, latch); // ratings for all entries in a given month
+            getAllRatingsAndWords(mDatabaseRef, map, latch); // ratings for all entries in a given month
 
             try {
                 latch.await();
@@ -187,6 +193,16 @@ public class Statistics extends AppCompatActivity {
             BarData data = new BarData(labels, dataSets);
             barChart.setData(data);
 
+            WordCloudView wordCloud = findViewById(R.id.wordCloud);
+            List<WordCloud> list = new ArrayList<>();
+            for (String key : wordMap.keySet()) {
+                list.add(new WordCloud(key, wordMap.get(key)));
+            }
+            wordCloud.setDataSet(list);
+            wordCloud.setColors(ColorTemplate.PASTEL_COLORS);
+            wordCloud.setSize(500, 400);
+            wordCloud.notifyDataSetChanged();
+
             showProgress(false);
         }
 
@@ -197,11 +213,12 @@ public class Statistics extends AppCompatActivity {
 
         /**
          * Gets all the ratings for all the months and puts them in the map in the respective months.
+         * Also gets all the frequencies of all the words for the word cloud.
          * @param databaseRef
-         * @param map
+         * @param ratingMap
          * @return
          */
-        private void getAllRatings(DatabaseReference databaseRef, final SparseArray<List<Integer>> map, final CountDownLatch latch) {
+        private void getAllRatingsAndWords(DatabaseReference databaseRef, final SparseArray<List<Integer>> ratingMap, final CountDownLatch latch) {
             /*
              * Retrieve the diary ratings from Entry objects at the selected date and add them to the
              * ratings list.
@@ -217,7 +234,21 @@ public class Statistics extends AppCompatActivity {
                             for (DataSnapshot child : date.getChildren()) {
                                 Entry entry = child.getValue(Entry.class);
                                 if (entry != null) {
-                                    map.get(month).add(Integer.parseInt(entry.getRating())); // adds rating for the day
+                                    // adds rating for the day
+                                    ratingMap.get(month).add(Integer.parseInt(entry.getRating()));
+
+                                    // gets all words in the entry
+                                    String[] words = entry.getEntry().split(" ");
+                                    for (String word : words) {
+                                        if (!TextUtils.isEmpty(word)) {
+                                            word = word.trim().toLowerCase();
+                                            if (wordMap.containsKey(word)) {
+                                                wordMap.put(word, wordMap.get(word) + 1);
+                                            } else {
+                                                wordMap.put(word, 1);
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }

@@ -6,18 +6,34 @@
     android:layout_height="match_parent"
     tools:context=".Statistics">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.github.mikephil.charting.charts.HorizontalBarChart
+                android:id="@+id/barchart"
+                android:layout_width="match_parent"
+                android:layout_height="520dp">
+
+            </com.github.mikephil.charting.charts.HorizontalBarChart>
+
+            <net.alhazmy13.wordcloud.WordCloudView
+                android:id="@+id/wordCloud"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </ScrollView>
+
     <ProgressBar
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone" />
-
-    <com.github.mikephil.charting.charts.HorizontalBarChart
-        android:id="@+id/barchart"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </com.github.mikephil.charting.charts.HorizontalBarChart>
 
 </android.support.constraint.ConstraintLayout>
