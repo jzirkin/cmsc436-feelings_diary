@@ -87,15 +87,6 @@ public class LoginActivity extends AppCompatActivity {
 
         // Password
         mPasswordView = findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                    attemptLogin();
-                }
-                return true;
-            }
-        });
 
         mForgotPasswordView = findViewById(R.id.forgot_password);
         mForgotPasswordView.setOnClickListener(new OnClickListener() {
