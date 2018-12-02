@@ -6,21 +6,13 @@ import android.annotation.TargetApi;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.View;
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.HorizontalBarChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,25 +20,32 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.ValueDependentColor;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
+import com.jjoe64.graphview.series.BarGraphSeries;
+import com.jjoe64.graphview.series.DataPoint;
 
+import net.alhazmy13.wordcloud.ColorTemplate;
 import net.alhazmy13.wordcloud.WordCloud;
 import net.alhazmy13.wordcloud.WordCloudView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
 
 public class Statistics extends AppCompatActivity {
 
-    private final static int PURPLE = 0x800080;
-    private final static int OLIVE = 0x808000;
-    private final static int MAROON = 0x741A31;
-    private final static int DARKBLUE = 0x1E1844;
-    private final static int TAN = 0xD2C378;
-    private final static int DARKGREEN = 0x003D00;
-    private final static int LIGHTGRAY = 0x9EA19D;
+    private final static int PURPLE = Color.rgb(128, 0, 128);
+    private final static int OLIVE = Color.rgb(128,128,0);
+    private final static int MAROON = Color.rgb(116,26,49);
+    private final static int DARKBLUE = Color.rgb(30,24,68);
+    private final static int TAN = Color.rgb(210,195,120);
+    private final static int DARKGREEN = Color.rgb(0,61,0);
+    private final static int LIGHTGRAY = Color.rgb(158,161,157);
 
 
     private String mUserID;
@@ -154,55 +153,55 @@ public class Statistics extends AppCompatActivity {
         @Override
         protected void onPostExecute(final Void nothing) {
             // adding entries for average ratings per month
-            BarChart barChart = findViewById(R.id.barchart);
-            ArrayList<BarEntry> barList = new ArrayList<>();
-            barList.add(new BarEntry((int) averages[0], 0));
-            barList.add(new BarEntry((int) averages[1], 1));
-            barList.add(new BarEntry((int) averages[2], 2));
-            barList.add(new BarEntry((int) averages[3], 3));
-            barList.add(new BarEntry((int) averages[4], 4));
-            barList.add(new BarEntry((int) averages[5], 5));
-            barList.add(new BarEntry((int) averages[6], 6));
-            barList.add(new BarEntry((int) averages[7], 7));
-            barList.add(new BarEntry((int) averages[8], 8));
-            barList.add(new BarEntry((int) averages[9], 9));
-            barList.add(new BarEntry((int) averages[10], 10));
-            barList.add(new BarEntry((int) averages[11], 11));
+            GraphView barChart = findViewById(R.id.barchart);
+            BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[]{
+                    new DataPoint(0, 0),
+                    new DataPoint(1, averages[0]),
+                    new DataPoint(2, averages[1]),
+                    new DataPoint(3, averages[2]),
+                    new DataPoint(4, averages[3]),
+                    new DataPoint(5, averages[4]),
+                    new DataPoint(6, averages[5]),
+                    new DataPoint(7, averages[6]),
+                    new DataPoint(8, averages[7]),
+                    new DataPoint(9, averages[8]),
+                    new DataPoint(10, averages[9]),
+                    new DataPoint(11, averages[10]),
+                    new DataPoint(12, averages[11]),
+                    new DataPoint(13, 0)
+            });
+            series.setDataWidth(1.3);
+            series.setSpacing(50);
+            series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+                @Override
+                public int get(DataPoint data) {
+                    Random r = new Random();
+                    int[] colors = {MAROON, OLIVE, DARKBLUE, DARKGREEN, TAN, PURPLE, LIGHTGRAY};
+                    return colors[r.nextInt(7)];
+                }
+            });
 
-            // creating dataset for Bar Group 1
-            BarDataSet barDataSet = new BarDataSet(barList, "Average Monthly Ratings");
-            barDataSet.setColors(ColorTemplate.PASTEL_COLORS);
+            barChart.addSeries(series);
 
-            // Creating the labels
-            ArrayList<String> labels = new ArrayList<>();
-            labels.add("Jan");
-            labels.add("Feb");
-            labels.add("Mar");
-            labels.add("Apr");
-            labels.add("May");
-            labels.add("Jun");
-            labels.add("Jul");
-            labels.add("Aug");
-            labels.add("Sep");
-            labels.add("Oct");
-            labels.add("Nov");
-            labels.add("Dec");
-
-            // combine all dataset into an arraylist
-            ArrayList<BarDataSet> dataSets = new ArrayList<>();
-            dataSets.add(barDataSet);
-
-            // initialize the Bardata with argument labels and dataSet
-            BarData data = new BarData(labels, dataSets);
-            barChart.setData(data);
-            barChart.setDrawValueAboveBar(false);
-            barChart.setClickable(false);
-            barChart.setDescription("");
-
-            // modify axes
-            XAxis x = barChart.getXAxis();
-            x.setPosition(XAxis.XAxisPosition.BOTTOM);
-            x.setLabelsToSkip(0);
+            StaticLabelsFormatter formatter = new StaticLabelsFormatter(barChart);
+            formatter.setHorizontalLabels(new String[] {
+                    "",
+                    getString(R.string.jan),
+                    getString(R.string.feb),
+                    getString(R.string.mar),
+                    getString(R.string.apr),
+                    getString(R.string.may),
+                    getString(R.string.jun),
+                    getString(R.string.jul),
+                    getString(R.string.aug),
+                    getString(R.string.sep),
+                    getString(R.string.oct),
+                    getString(R.string.nov),
+                    getString(R.string.dec),
+                    ""
+            });
+            barChart.getGridLabelRenderer().setLabelFormatter(formatter);
+            barChart.setTitle(getString(R.string.graph_title));
 
             WordCloudView wordCloud = findViewById(R.id.wordCloud);
             List<WordCloud> list = new ArrayList<>();
