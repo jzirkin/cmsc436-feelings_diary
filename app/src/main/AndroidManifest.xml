@@ -35,21 +35,28 @@
         <activity android:name=".EntryCreation" />
         <activity android:name=".MainActivity" />
         <activity android:name=".SettingsActivity" />
-
-
         <activity
             android:name=".SearchActivity"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ViewEntryActivity"
-            android:label="@string/diary_entry_label"></activity>
+            android:label="@string/diary_entry_label" />
 
         <receiver android:name=".NotificationReminderReceiver" />
 
         <activity
             android:name=".CalendarActivity"
-            android:label="@string/calendar_vew_label"></activity>
-        <activity android:name=".Statistics"></activity>
+            android:label="@string/calendar_vew_label" />
+        <activity android:name=".Statistics" />
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:label="@string/title_activity_change_password"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".NotificationTimeSettingActivity"
+            android:label="@string/title_activity_notification_time_setting"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".NotificationFrequencyActivity"></activity>
     </application>
 
 </manifest>

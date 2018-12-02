@@ -1,161 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/changepassbutton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:text="@string/change_password" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                tools:layout_editor_absoluteY="118dp">
+        <Button
+            android:id="@+id/changefrequencybutton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/change_notif_freq" />
 
-                <TextView
-                    android:id="@+id/change_password_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/change_password"
-                    tools:layout_editor_absoluteX="16dp"
-                    tools:layout_editor_absoluteY="186dp" />
-
-                <EditText
-                    android:id="@+id/password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/prompt_password"
-                    android:inputType="textPassword"
-                    tools:layout_editor_absoluteX="16dp"
-                    tools:layout_editor_absoluteY="205dp" />
-
-                <EditText
-                    android:id="@+id/confirm_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/prompt_confirm_password"
-                    android:inputType="textPassword"
-                    tools:layout_editor_absoluteX="16dp"
-                    tools:layout_editor_absoluteY="261dp" />
-
-                <Button
-                    android:id="@+id/change_password_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/change_password"
-                    tools:layout_editor_absoluteX="16dp"
-                    tools:layout_editor_absoluteY="326dp" />
-            </LinearLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/activity_vertical_margin" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/activity_vertical_margin" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/notification_time_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="24dp"
-                    android:text="@string/change_notification_time"
-                    tools:layout_editor_absoluteX="16dp"
-                    tools:layout_editor_absoluteY="16dp" />
-
-                <TimePicker
-                    android:id="@+id/notification_time"
-                    android:timePickerMode="spinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <Button
-                    android:id="@+id/save_notification_time_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/save_notification_time"
-                    tools:layout_editor_absoluteX="16dp"
-                    tools:layout_editor_absoluteY="87dp" />
-
-            </LinearLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/activity_vertical_margin" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/activity_vertical_margin" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/notification_frequency_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/change_notification_frequency" />
-
-                <RadioGroup
-                    android:id="@+id/frequency_group"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <RadioButton
-                        android:id="@+id/daily"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/frequency_daily" />
-
-                    <RadioButton
-                        android:id="@+id/few_days"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/frequency_few_days" />
-
-                    <RadioButton
-                        android:id="@+id/weekly"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/frequency_weekly" />
-
-                    <RadioButton
-                        android:id="@+id/never"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/frequency_never" />
-                </RadioGroup>
-
-                <Button
-                    android:id="@+id/save_notification_frequency_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/save_notification_frequency" />
-            </LinearLayout>
-
-        </LinearLayout>
-    </ScrollView>
-
-
-</android.support.constraint.ConstraintLayout>
+        <Button
+            android:id="@+id/changenotiftimebutton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/change_notification_time" />
+    </LinearLayout>
+</LinearLayout>
