@@ -25,21 +25,21 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        findViewById(R.id.changepassbutton).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.change_pass_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SettingsActivity.this, ChangePasswordActivity.class));
             }
         });
 
-        findViewById(R.id.changefrequencybutton).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.change_frequency_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SettingsActivity.this, NotificationFrequencyActivity.class));
             }
         });
 
-        findViewById(R.id.changenotiftimebutton).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.change_notiftimebutton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SettingsActivity.this, NotificationTimeSettingActivity.class));

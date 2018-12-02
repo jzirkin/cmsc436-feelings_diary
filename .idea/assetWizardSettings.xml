@@ -48,9 +48,9 @@
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="height" value="640" />
-                            <entry key="outputName" value="ic_background_main" />
+                            <entry key="outputName" value="ic_background_settings" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\KK\Downloads\mainempty.svg" />
+                            <entry key="sourceFile" value="C:\Users\KK\Downloads\generic.svg" />
                             <entry key="width" value="360" />
                           </map>
                         </option>
