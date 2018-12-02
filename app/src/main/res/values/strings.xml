@@ -103,4 +103,20 @@
     <string name="calendar_vew_label">Select a Date to View Entries</string>
     <string name="title_activity_change_password">ChangePasswordActivity</string>
     <string name="title_activity_notification_time_setting">NotificationTimeSettingActivity</string>
+
+    <!-- Strings related to stats -->
+    <string name="graph_title">Average Mood Rating Per Month</string>
+    <string name="jan">Jan</string>
+    <string name="feb">Feb</string>
+    <string name="mar">Mar</string>
+    <string name="apr">Apr</string>
+    <string name="may">May</string>
+    <string name="jun">Jun</string>
+    <string name="jul">Jul</string>
+    <string name="aug">Aug</string>
+    <string name="sep">Sep</string>
+    <string name="oct">Oct</string>
+    <string name="nov">Nov</string>
+    <string name="dec">Dec</string>
+
 </resources>
