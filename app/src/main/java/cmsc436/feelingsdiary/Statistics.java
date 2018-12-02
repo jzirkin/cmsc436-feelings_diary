@@ -13,7 +13,10 @@ import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.View;
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -151,47 +154,55 @@ public class Statistics extends AppCompatActivity {
         @Override
         protected void onPostExecute(final Void nothing) {
             // adding entries for average ratings per month
-            HorizontalBarChart barChart = findViewById(R.id.barchart);
-            ArrayList<BarEntry> bargroup1 = new ArrayList<>();
-            bargroup1.add(new BarEntry((int) averages[0], 0));
-            bargroup1.add(new BarEntry((int) averages[1], 1));
-            bargroup1.add(new BarEntry((int) averages[2], 2));
-            bargroup1.add(new BarEntry((int) averages[3], 3));
-            bargroup1.add(new BarEntry((int) averages[4], 4));
-            bargroup1.add(new BarEntry((int) averages[5], 5));
-            bargroup1.add(new BarEntry((int) averages[6], 6));
-            bargroup1.add(new BarEntry((int) averages[7], 7));
-            bargroup1.add(new BarEntry((int) averages[8], 8));
-            bargroup1.add(new BarEntry((int) averages[9], 9));
-            bargroup1.add(new BarEntry((int) averages[10], 10));
-            bargroup1.add(new BarEntry((int) averages[11], 11));
+            BarChart barChart = findViewById(R.id.barchart);
+            ArrayList<BarEntry> barList = new ArrayList<>();
+            barList.add(new BarEntry((int) averages[0], 0));
+            barList.add(new BarEntry((int) averages[1], 1));
+            barList.add(new BarEntry((int) averages[2], 2));
+            barList.add(new BarEntry((int) averages[3], 3));
+            barList.add(new BarEntry((int) averages[4], 4));
+            barList.add(new BarEntry((int) averages[5], 5));
+            barList.add(new BarEntry((int) averages[6], 6));
+            barList.add(new BarEntry((int) averages[7], 7));
+            barList.add(new BarEntry((int) averages[8], 8));
+            barList.add(new BarEntry((int) averages[9], 9));
+            barList.add(new BarEntry((int) averages[10], 10));
+            barList.add(new BarEntry((int) averages[11], 11));
 
             // creating dataset for Bar Group 1
-            BarDataSet barDataSet1 = new BarDataSet(bargroup1, "Average Monthly Ratings");
-            barDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
+            BarDataSet barDataSet = new BarDataSet(barList, "Average Monthly Ratings");
+            barDataSet.setColors(ColorTemplate.PASTEL_COLORS);
 
             // Creating the labels
-            ArrayList<String> labels = new ArrayList<String>();
-            labels.add("January");
-            labels.add("February");
-            labels.add("March");
-            labels.add("April");
+            ArrayList<String> labels = new ArrayList<>();
+            labels.add("Jan");
+            labels.add("Feb");
+            labels.add("Mar");
+            labels.add("Apr");
             labels.add("May");
-            labels.add("June");
-            labels.add("July");
-            labels.add("August");
-            labels.add("September");
-            labels.add("October");
-            labels.add("November");
-            labels.add("December");
+            labels.add("Jun");
+            labels.add("Jul");
+            labels.add("Aug");
+            labels.add("Sep");
+            labels.add("Oct");
+            labels.add("Nov");
+            labels.add("Dec");
 
             // combine all dataset into an arraylist
             ArrayList<BarDataSet> dataSets = new ArrayList<>();
-            dataSets.add(barDataSet1);
+            dataSets.add(barDataSet);
 
             // initialize the Bardata with argument labels and dataSet
             BarData data = new BarData(labels, dataSets);
             barChart.setData(data);
+            barChart.setDrawValueAboveBar(false);
+            barChart.setClickable(false);
+            barChart.setDescription("");
+
+            // modify axes
+            XAxis x = barChart.getXAxis();
+            x.setPosition(XAxis.XAxisPosition.BOTTOM);
+            x.setLabelsToSkip(0);
 
             WordCloudView wordCloud = findViewById(R.id.wordCloud);
             List<WordCloud> list = new ArrayList<>();
