@@ -3,19 +3,20 @@ package cmsc436.feelingsdiary;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -28,19 +29,26 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import net.alhazmy13.wordcloud.WordCloud;
+import net.alhazmy13.wordcloud.WordCloudView;
+
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
 
 public class Statistics extends AppCompatActivity {
+
+    private final static int PURPLE = 0x800080;
+    private final static int OLIVE = 0x808000;
+    private final static int MAROON = 0x741A31;
+    private final static int DARKBLUE = 0x1E1844;
+    private final static int TAN = 0xD2C378;
+    private final static int DARKGREEN = 0x003D00;
+    private final static int LIGHTGRAY = 0x9EA19D;
+
+
     private String mUserID;
     private DatabaseReference mDatabaseRef;
 
@@ -106,6 +114,7 @@ public class Statistics extends AppCompatActivity {
     private class StatsTask extends AsyncTask<Void, Void, Void> {
 
         double[] averages = new double[12];
+        HashMap<String, Integer> wordMap = new HashMap<>();
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -127,7 +136,7 @@ public class Statistics extends AppCompatActivity {
             CountDownLatch latch = new CountDownLatch(1);
 
             // loops through each day to get all ratings for all entries on all days in a month
-            getAllRatings(mDatabaseRef, map, latch); // ratings for all entries in a given month
+            getAllRatingsAndWords(mDatabaseRef, map, latch); // ratings for all entries in a given month
 
             try {
                 latch.await();
@@ -145,47 +154,65 @@ public class Statistics extends AppCompatActivity {
         @Override
         protected void onPostExecute(final Void nothing) {
             // adding entries for average ratings per month
-            HorizontalBarChart barChart = findViewById(R.id.barchart);
-            ArrayList<BarEntry> bargroup1 = new ArrayList<>();
-            bargroup1.add(new BarEntry((int) averages[0], 0));
-            bargroup1.add(new BarEntry((int) averages[1], 1));
-            bargroup1.add(new BarEntry((int) averages[2], 2));
-            bargroup1.add(new BarEntry((int) averages[3], 3));
-            bargroup1.add(new BarEntry((int) averages[4], 4));
-            bargroup1.add(new BarEntry((int) averages[5], 5));
-            bargroup1.add(new BarEntry((int) averages[6], 6));
-            bargroup1.add(new BarEntry((int) averages[7], 7));
-            bargroup1.add(new BarEntry((int) averages[8], 8));
-            bargroup1.add(new BarEntry((int) averages[9], 9));
-            bargroup1.add(new BarEntry((int) averages[10], 10));
-            bargroup1.add(new BarEntry((int) averages[11], 11));
+            BarChart barChart = findViewById(R.id.barchart);
+            ArrayList<BarEntry> barList = new ArrayList<>();
+            barList.add(new BarEntry((int) averages[0], 0));
+            barList.add(new BarEntry((int) averages[1], 1));
+            barList.add(new BarEntry((int) averages[2], 2));
+            barList.add(new BarEntry((int) averages[3], 3));
+            barList.add(new BarEntry((int) averages[4], 4));
+            barList.add(new BarEntry((int) averages[5], 5));
+            barList.add(new BarEntry((int) averages[6], 6));
+            barList.add(new BarEntry((int) averages[7], 7));
+            barList.add(new BarEntry((int) averages[8], 8));
+            barList.add(new BarEntry((int) averages[9], 9));
+            barList.add(new BarEntry((int) averages[10], 10));
+            barList.add(new BarEntry((int) averages[11], 11));
 
             // creating dataset for Bar Group 1
-            BarDataSet barDataSet1 = new BarDataSet(bargroup1, "Average Monthly Ratings");
-            barDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
+            BarDataSet barDataSet = new BarDataSet(barList, "Average Monthly Ratings");
+            barDataSet.setColors(ColorTemplate.PASTEL_COLORS);
 
             // Creating the labels
-            ArrayList<String> labels = new ArrayList<String>();
-            labels.add("January");
-            labels.add("February");
-            labels.add("March");
-            labels.add("April");
+            ArrayList<String> labels = new ArrayList<>();
+            labels.add("Jan");
+            labels.add("Feb");
+            labels.add("Mar");
+            labels.add("Apr");
             labels.add("May");
-            labels.add("June");
-            labels.add("July");
-            labels.add("August");
-            labels.add("September");
-            labels.add("October");
-            labels.add("November");
-            labels.add("December");
+            labels.add("Jun");
+            labels.add("Jul");
+            labels.add("Aug");
+            labels.add("Sep");
+            labels.add("Oct");
+            labels.add("Nov");
+            labels.add("Dec");
 
             // combine all dataset into an arraylist
             ArrayList<BarDataSet> dataSets = new ArrayList<>();
-            dataSets.add(barDataSet1);
+            dataSets.add(barDataSet);
 
             // initialize the Bardata with argument labels and dataSet
             BarData data = new BarData(labels, dataSets);
             barChart.setData(data);
+            barChart.setDrawValueAboveBar(false);
+            barChart.setClickable(false);
+            barChart.setDescription("");
+
+            // modify axes
+            XAxis x = barChart.getXAxis();
+            x.setPosition(XAxis.XAxisPosition.BOTTOM);
+            x.setLabelsToSkip(0);
+
+            WordCloudView wordCloud = findViewById(R.id.wordCloud);
+            List<WordCloud> list = new ArrayList<>();
+            for (String key : wordMap.keySet()) {
+                list.add(new WordCloud(key, wordMap.get(key)));
+            }
+            wordCloud.setDataSet(list);
+            wordCloud.setColors(ColorTemplate.PASTEL_COLORS);
+            wordCloud.setSize(500, 400);
+            wordCloud.notifyDataSetChanged();
 
             showProgress(false);
         }
@@ -197,11 +224,12 @@ public class Statistics extends AppCompatActivity {
 
         /**
          * Gets all the ratings for all the months and puts them in the map in the respective months.
+         * Also gets all the frequencies of all the words for the word cloud.
          * @param databaseRef
-         * @param map
+         * @param ratingMap
          * @return
          */
-        private void getAllRatings(DatabaseReference databaseRef, final SparseArray<List<Integer>> map, final CountDownLatch latch) {
+        private void getAllRatingsAndWords(DatabaseReference databaseRef, final SparseArray<List<Integer>> ratingMap, final CountDownLatch latch) {
             /*
              * Retrieve the diary ratings from Entry objects at the selected date and add them to the
              * ratings list.
@@ -217,7 +245,21 @@ public class Statistics extends AppCompatActivity {
                             for (DataSnapshot child : date.getChildren()) {
                                 Entry entry = child.getValue(Entry.class);
                                 if (entry != null) {
-                                    map.get(month).add(Integer.parseInt(entry.getRating())); // adds rating for the day
+                                    // adds rating for the day
+                                    ratingMap.get(month).add(Integer.parseInt(entry.getRating()));
+
+                                    // gets all words in the entry
+                                    String[] words = entry.getEntry().split(" ");
+                                    for (String word : words) {
+                                        if (!TextUtils.isEmpty(word)) {
+                                            word = word.trim().toLowerCase();
+                                            if (wordMap.containsKey(word)) {
+                                                wordMap.put(word, wordMap.get(word) + 1);
+                                            } else {
+                                                wordMap.put(word, 1);
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }

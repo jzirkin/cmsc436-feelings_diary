@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -40,20 +41,24 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 }
 
                 String email = mEmailView.getText().toString();
-                mEmailView.clearFocus();
+                if (TextUtils.isEmpty(email)) {
+                    mEmailView.setError(getString(R.string.error_field_required));
+                } else {
+                    mEmailView.clearFocus();
 
-                // Send password email
-                mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(ForgotPasswordActivity.this, R.string.toast_email_sent, Toast.LENGTH_LONG).show();
-                        } else {
-                            mEmailView.requestFocus();
-                            mEmailView.setError(getString(R.string.error_bad_email));
+                    // Send password email
+                    mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(ForgotPasswordActivity.this, R.string.toast_email_sent, Toast.LENGTH_LONG).show();
+                            } else {
+                                mEmailView.requestFocus();
+                                mEmailView.setError(getString(R.string.error_bad_email));
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         });
     }

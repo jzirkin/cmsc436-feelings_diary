@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -162,11 +163,11 @@ public class LoginActivity extends AppCompatActivity {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        if (email.isEmpty()) {
+        if (TextUtils.isEmpty(email)) {
             mEmailView.requestFocus();
             mEmailView.setError(getString(R.string.error_field_required));
             return;
-        } else if (password.isEmpty()) {
+        } else if (TextUtils.isEmpty(password)) {
             mPasswordView.requestFocus();
             mPasswordView.setError(getString(R.string.error_field_required));
             return;

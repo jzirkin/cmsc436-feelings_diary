@@ -8,7 +8,7 @@
     <string name="action_log_in">Log in</string>
     <string name="action_log_in_short">Log in</string>
     <string name="error_invalid_password">
-        Passwords must be greater than 5 characters and must contain an uppercase and special character.</string>
+        Passwords must be greater than 5 characters and must contain a number.</string>
     <string name="error_incorrect_password">This password did not match an existing email.</string>
     <string name="error_field_required">This field is required.</string>
     <string name="sign_up_text_field">Don\'t have an account? Sign up <u>here</u>.</string>
