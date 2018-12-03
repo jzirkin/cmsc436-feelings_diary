@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#4F1F2A</color>
     <color name="colorPrimaryDark">#36384C</color>
-    <color name="colorAccent">#FFFFFF</color>
+    <color name="colorAccent">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="cream">#E9DCCD</color>
     <color name="petal">#E3BAB3</color>
