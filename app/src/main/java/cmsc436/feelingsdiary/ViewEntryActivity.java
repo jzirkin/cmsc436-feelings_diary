@@ -70,9 +70,9 @@ public class ViewEntryActivity extends AppCompatActivity {
         //Gets the location and builds a string out of it
         String locationString = "";
         Location loc = mEntry.getLocation();
-        if(loc == null)
+        if(loc == null) {
             locationString = getString(R.string.invalid_location);
-        else{
+        } else {
             double latitude = loc.getLatitude();
             double longitude = loc.getLongitude();
             Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());

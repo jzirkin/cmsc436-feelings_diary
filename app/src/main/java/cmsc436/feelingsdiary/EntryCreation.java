@@ -80,25 +80,14 @@ public class EntryCreation extends AppCompatActivity implements Serializable {
                 String entryDate = sdf.format(currentTime);
                 Location lastLocation = null;
                 //Get location info
-                if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    //TODO: Fix this, cant get the activity to request permission for
-                    // ActivityCompat.requestPermissions(getApplicationContext(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-                }
-                else{
+                if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+                } else {
                     lastLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                     if(lastLocation == null){
                         lastLocation = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                     }
                 }
-                //TODO maybe handle no locaiton found with LocationListener? Not sure when it should be used as this seems to do the job.
-
 
                 // We don't check the contents of the entry because it's optional
                 Entry entry = new Entry(

@@ -19,7 +19,8 @@ public class Entry implements Serializable {
 
     // for Firebase
     public Entry() {}
-    public Entry(String date, String rating, String entry, Location location,   List<String> tags) {
+
+    public Entry(String date, String rating, String entry, Location location, List<String> tags) {
         this.date = date;
         this.rating = rating;
         this.entry = entry;

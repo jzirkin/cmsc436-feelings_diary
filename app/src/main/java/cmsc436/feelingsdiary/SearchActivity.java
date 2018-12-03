@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -220,7 +221,8 @@ public class SearchActivity extends AppCompatActivity {
                                 String datetime = (String) data.child("date").getValue();
                                 String mood = (String) data.child("rating").getValue();
                                 List<String> tags = (List<String>) data.child("tags").getValue();
-                                list.add(new Entry(datetime, mood, message, tags));
+                                Location location = (Location) data.child("location").getValue();
+                                list.add(new Entry(datetime, mood, message, location, tags));
                             } else {
                                 if (data.child("tags").getValue() != null) {
                                     for (String tag : (List<String>) data.child("tags").getValue()) {
@@ -228,7 +230,8 @@ public class SearchActivity extends AppCompatActivity {
                                             String datetime = (String) data.child("date").getValue();
                                             String mood = (String) data.child("rating").getValue();
                                             List<String> tags = (List<String>) data.child("tags").getValue();
-                                            list.add(new Entry(datetime, mood, message, tags));
+                                            Location location = (Location) data.child("location").getValue();
+                                            list.add(new Entry(datetime, mood, message, location, tags));
                                             break;
                                         }
                                     }
