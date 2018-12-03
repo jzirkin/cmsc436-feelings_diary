@@ -5,6 +5,7 @@
 2. Noah Salomons
 3. Ryan Weissman
 4. Alice Shi
+5. Kevin Chen
 
 ## Logging In
 This is the first screen the user will see. The user can simply enter their email and password to log into the app. If the user does not have an account yet, they can click a button to go to the sign up page. Here, a user will enter their email, a password, and retype their password. Pressing the "Sign Up" button will register the user and return to the log in screen. Of course, if their email or password is malformed or the two passwords don't match, the user will not be registered and an error will be shown to the user. If the user forgets their password, they can always reset it. From the log in page, users can go to the reset password page where they can enter their email. Firebase will send them an email with instructions to reset their password, as long as the email they entered is registered with Mood.io. Logging in and signing up requires FirebaseAuth. The app will start an AsyncTask to do this work so the app doesn't hang while this potentially lengthy operation occurs. While the AsyncTask is running, the UI is hidden and a loading spinner appears. Once the AsyncTask finishes, the Main Menu screen opens. If the log in Activity is opened and a user is already logged in, they will automatically be brought the Main Menu. 
