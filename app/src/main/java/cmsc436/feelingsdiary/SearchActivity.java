@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -98,6 +99,7 @@ public class SearchActivity extends AppCompatActivity {
 
         // Simple TextView if no results are found
         mNoResults = new TextView(this);
+        mNoResults.setTextColor(Color.WHITE);
         mNoResults.setText(R.string.no_search_results);
 
         // List that shows all results found (must be > 0)

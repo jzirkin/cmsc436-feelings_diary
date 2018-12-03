@@ -2,24 +2,12 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/ic_background_search"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SearchActivity">
 
     <!-- Login progress -->
-
-    <TextView
-        android:id="@+id/search_text"
-        android:layout_width="wrap_content"
-        android:layout_height="29dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/search_text"
-        app:layout_constraintBottom_toTopOf="@+id/search_editText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.857" />
 
     <EditText
         android:id="@+id/search_editText"
@@ -31,7 +19,10 @@
         app:layout_constraintBottom_toTopOf="@+id/search_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:theme="@style/EditTextTheme"/>
 
     <Button
         android:id="@+id/search_button"
@@ -41,7 +32,9 @@
         android:text="@string/search_button"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/white"
+        android:background="@color/colorPrimaryDark"/>
 
     <LinearLayout
         android:id="@+id/linearLayout"
