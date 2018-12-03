@@ -43,11 +43,11 @@ public class CalendarActivity extends AppCompatActivity {
             View view = super.getView(position, convertView, parent);
             int rating = Integer.parseInt(mSelectedDateEntryList.get(position).getRating());
             if (rating >= 4)
-                view.setBackgroundColor(Color.parseColor("#88D7BF"));
+                view.setBackgroundColor(Color.parseColor("#849974"));
             else if (rating > 2)
-                view.setBackgroundColor(Color.parseColor("#EEC964"));
+                view.setBackgroundColor(Color.parseColor("#E9DCCD"));
             else
-                view.setBackgroundColor(Color.parseColor("#D06A74"));
+                view.setBackgroundColor(Color.parseColor("#36384C"));
 
             return view;
         }
