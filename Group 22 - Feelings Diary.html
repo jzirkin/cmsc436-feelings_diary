@@ -6,116 +6,117 @@
 .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
 </style>
 <table class="tg">
-  <tbody><tr>
-    <td class="tg-031e"><img src=https://github.com/jzirkin/cmsc436-feelings_diary/blob/doc-stuff/icon.png?raw=true" alt="Icon"></td>
-    <td class="tg-031e">Mood.io</td>
-  </tr>
-  <tr>
-    <td class="tg-031e" colspan="2">External link to .apk</td>
-  </tr>
-  <tr>
-    <td class="tg-031e" colspan="2"><a href="https://github.com/jzirkin/cmsc436-feelings_diary/raw/doc-stuff/feelingsdiary.zip">Link to zip</a></td>
-  </tr>
-  <tr>
-    <td class="tg-031e" colspan="2">
-		Mood.io is an app designed to let users keep a diary on their Android mobile device. The app uses Firebase to authenticate users and store information about the user's
-		diary entries. Once the user is logged in, Mood.io provides the user with four main features: entry creation, entry viewing by date, entry viewing by searching, and statistics about the
-		user. The app also reminds the user to make an entry every day if they have not made an entry in a while. This notification system can be made less frequent or turned off through
-		a settings menu. More detailed information about these features is discussed below. For even more detail, you can view the code itself to see all the functionality and 
-		behind-the-scenes work. Additionally, we've created a dummy Gmail account for you to view our Firebase authentication and database structure. The email is
-		cmsc436feelingsdiary@gmail.com and the password is cmsc436diary. (Please send an email to nsalomon@terpmail.umd.edu if those credentials don't work for some reason.) Note:
-		we did not create a Mood.io account with these credentials, so feel free to use that email or your own to test the signing up/logging in functionality. <br/> <br/>
+    <tbody><tr>
+        <td class="tg-031e"><img src=https://github.com/jzirkin/cmsc436-feelings_diary/blob/doc-stuff/icon.png?raw=true" alt="Icon"></td>
+        <td class="tg-031e">Mood.io</td>
+    </tr>
+    <tr>
+        <td class="tg-031e" colspan="2">External link to .apk</td>
+    </tr>
+    <tr>
+        <td class="tg-031e" colspan="2"><a href="https://github.com/jzirkin/cmsc436-feelings_diary/raw/doc-stuff/feelingsdiary.zip">Link to zip</a></td>
+    </tr>
+    <tr>
+        <td class="tg-031e" colspan="2">
+            Mood.io is an app designed to let users keep a diary on their Android mobile device. The app uses Firebase to authenticate users and store information about the user's
+            diary entries. Once the user is logged in, Mood.io provides the user with four main features: entry creation, entry viewing by date, entry viewing by searching, and statistics about the
+            user's entries. Statistics include a bar graph with average mood rating per month and a word cloud of words used in entry messages. The app also reminds the user to make an entry every day if they have not made an entry in a while. This notification system can be made less frequent or turned off through
+            a settings menu. More detailed information about these features is discussed below. For even more detail, you can view the code itself to see all the functionality and
+            behind-the-scenes work. Additionally, we've created a dummy Gmail account for you to view our Firebase authentication and database structure. This account should have viewing access to our Firebase project. The email is
+            cmsc436feelingsdiary@gmail.com and the password is cmsc436diary. (Please send an email to nsalomon@terpmail.umd.edu if those credentials don't work for some reason.) Note:
+            we did not create a Mood.io account with these credentials, so feel free to use that email or your own to test the signing up/logging in functionality. <br/> <br/>
 
-		<b>Logging In</b><br/>
-		This is the first screen the user will see. The user can simply enter their email and password to log into the app. If the user does not have an account yet, they can click a button
-		to go to the sign up page. Here, a user will enter their email, a password, and retype their password. Pressing the "Sign Up" button will register the user and return to the log in 
-		screen. Of course, if their email or password is malformed or the two passwords don't match, the user will not be registered and an error will be shown to the user. If the user 
-		forgets their password, they can always reset it. From the log in page, users can go to the reset password page where they can enter their email. Firebase will send them an 
-		email with instructions to reset their password, as long as the email they entered is registered with Mood.io. Logging in and signing up requires FirebaseAuth. The app will start 
-		an AsyncTask to do this work so the app doesn't hang while this potentially lengthy operation occurs. While the AsyncTask is running, the UI is hidden and a loading spinner appears. 
-		Once the AsyncTask finishes, the Main Menu screen opens. If the log in Activity is opened and a user is already logged in, they will automatically be brought the Main Menu. <br/> <br/>
+            <b>Logging In</b><br/>
+            This is the first screen the user will see. The user can simply enter their email and password to log into the app. If the user does not have an account yet, they can click a button
+            to go to the sign up page. Here, a user will enter their email, a password, and retype their password. Pressing the "Sign Up" button will register the user and return to the log in
+            screen. Of course, if their email or password is malformed or the two passwords don't match, the user will not be registered and an error will be shown to the user. If the user
+            forgets their password, they can always reset it. From the log in page, users can go to the reset password page where they can enter their email. Firebase will send them an
+            email with instructions to reset their password, as long as the email they entered is registered with Mood.io. Logging in and signing up requires FirebaseAuth. The app will start
+            an AsyncTask to do this work so the app doesn't hang while this potentially lengthy operation occurs. While the AsyncTask is running, the UI is hidden and a loading spinner appears.
+            Once the AsyncTask finishes, the Main Menu screen opens. If the log in Activity is opened and a user is already logged in, they will automatically be brought the Main Menu. <br/> <br/>
 
-		<b>Main Menu</b><br/>
-		The Main Menu is very straightforward. It contains four buttons: "New Entry", "Stats", "Calendar", and "Search Entries". The four buttons will open up their respective
-		feature. There is also an options menu located in the top right with two options: "Settings" and "Logout". Pressing "Settings" will open up a settings page and pressing "Logout"
-		will log the user out of the app and remove them as the current user of FirebaseAuth<br/> <br/>
+            <b>Main Menu</b><br/>
+            The Main Menu is very straightforward. It contains four buttons at the bottom: "New Entry", "Stats", "Calendar", and "Search Entries". The four buttons will open up their respective
+            feature. There is also an options menu located in the top right with two options: "Settings" and "Logout". Pressing "Settings" will open up a settings page and pressing "Logout"
+            will log the user out of the app and remove them as the current user of FirebaseAuth.<br/> <br/>
 
-		<b>Entry Creation</b><br/>
-		The entry creation screen is simplistic as to not overwhelm the user with options and information. The user is asked to user a slider to rate how they are feeling on a scale
-		from 1 to 5 and tags for searching. The user can also type an optional entry message. This can be anything from a few sentences to many paragraphs - whatever the user wants. We wanted to give the user
-		flexibility depending on how much they felt writing at the time. When the user presses the submit button, their entry is saved. In Firebase, the date and time the user pressed 
-		the "Submit" button, their mood rating, and the entry message are saved in Firebase under their unique user ID and then the date. We chose to store each entry by date, instead of just
-		all under the user, for better performance when using the calendar. After the entry is saved in Firebase, the user is taken to a page that lets them view the entry they just created.
-		Pressing back from here will return them to the Main Menu. <br/> <br/>
+            <b>Entry Creation</b><br/>
+            The entry creation screen is simplistic as to not overwhelm the user with options and information. The user is asked to user a slider to rate how they are feeling on a scale
+            from 1 to 5 and tags for searching. Additionally, the user may enter "tags" to classify the entry or for ease of search later. The user can also type an optional entry message. This can be anything from a few sentences to many paragraphs - whatever the user wants. We wanted to give the user
+            flexibility depending on how much they felt writing at the time. When the user presses the submit button, their entry is saved. In Firebase, the date and time the user pressed
+            the "Submit" button, their mood rating, tags, and the entry message are saved in Firebase under their unique user ID and then the date. We chose to store each entry by date, instead of just
+            all under the user, for better performance when using the calendar or when trying to view a specific entry. After the entry is saved in Firebase, the user is taken to a page that lets them view the entry they just created.
+            Pressing back from here will return them to the Main Menu. <br/> <br/>
 
-		<b>Entry Viewing</b><br/>
-		Entries can be viewed through the calendar or through searching. When viewing an entry, the user will see the time and date they created the entry, their mood rating at the time,
-		and tags they associated with the entry, and the message of the entry, if any. From this screen the user can also delete the entry from the database. A pop-up dialog is used
-		to confirm that the user did not make a mistake and the entry is not deleted on accident. <br/><br/>
+            <b>Entry Viewing</b><br/>
+            Entries can be viewed through the calendar or through searching. When viewing an entry, the user will see the time and date they created the entry, their mood rating at the time,
+            any tags they associated with the entry, and the message of the entry, if any. From this screen the user can also delete the entry from the database. A pop-up dialog is used
+            to confirm that the user did not make a mistake and the entry is not deleted on accident. <br/><br/>
 
-		<b>Stats</b><br/>
-		Two statistic visualizations are shown. One is a bar graph that shows the average mood rating per month. The second is a word cloud that uses words from all entries ever
-		created. All the data for both of these retrieved from Firebase using an AsyncTask. A loading spinner is shown while the AsyncTask runs. Both the data visualizations were
-		implemented with the help with other GitHub projects linked down below.
-		<br/><br/>
+            <b>Stats</b><br/>
+            Two statistic visualizations are shown. One is a bar graph that shows the average mood rating per month. The second is a word cloud that uses words from all entries ever
+            created by the user. All the data for both of these retrieved from Firebase using an AsyncTask. A loading spinner is shown while the AsyncTask runs. Both the data visualizations were
+            implemented with the help with other GitHub projects linked down below.
+            <br/><br/>
 
-		<b>Calendar</b><br/>
-		Mood.io allows users to view past entries by date using the Calendar feature. Selecting a date will display a list of all the diary entries recorded on that date. These entries are 
-		retrieved from the Firebase database. The user can select a diary entry to view it. If the user selects a date with no entries, a Toast message tells them that there are no diary entries
-		on that date.
-		<br/><br/>
+            <b>Calendar</b><br/>
+            Mood.io allows users to view past entries by date using the Calendar feature. Selecting a date will display a list of all the diary entries recorded on that date. These entries are
+            retrieved from the Firebase database. The user can select a diary entry to view it. If the user selects a date with no entries, a Toast message tells them that there are no diary entries
+            on that date.
+            <br/><br/>
 
-		<b>Search Entries</b> <br/>
-		This page lets users search for entries based on a word or phrase. This searches through all of the user's entries and tags across all dates. Upon opening up this Activity, the user sees
-		a prompt to enter keywords(s) and "Search" button. If the user enters nothing or character(s) that don't match any of their entries or tags, text is shown below informing the user that
-		no matches were found. If the user's search does find a match, a list of all entries matching the keyword(s) is shown (using a ListView and a respective Adapter). Each element
-		of the list displays the date and time the entry was created, the mood rating selected, tags, and the beginning of the entry, if available. If a list item is clicked on, a page
-		to view the full entry is opened. Because searching can be a potentially long operation, an AsyncTask is created to do the search. While the AsyncTask is running, the "Search" 
-		button is disabled to avoid any messy thread complications. Additionally, any results or text shown below from previous searches is made invisible and a loading spinner is shown 
-		in its place. <br/><br/>
+            <b>Search Entries</b> <br/>
+            This page lets users search for entries based on a word or phrase. This searches through all of the user's entries and tags across all dates. Upon opening up this Activity, the user sees
+            a prompt to enter keywords(s) and "Search" button. If the user enters nothing or characters that don't match any of their entries or tags, text is shown below informing the user that
+            no matches were found. If the user's search does find a match, a list of all entries matching the keyword(s) is shown (using a ListView and a respective Adapter). Each element
+            of the list displays the date and time the entry was created, the mood rating selected, tags, and the beginning of the entry, if available. If a list item is clicked on, a page
+            to view the full entry is opened. Because searching can be a potentially long operation, an AsyncTask is created to do the search. While the AsyncTask is running, the "Search"
+            button is disabled to avoid any messy thread complications. Additionally, any results or text shown below from previous searches is made invisible and a loading spinner is shown
+            in its place. <br/><br/>
 
-		<b>Notifications</b> <br/>
-		Notification reminders are sent out using a combination of an Alarm and BroadcastReceiver. We wanted the app to remind users to check in if they hadn't created an entry in a while.
-		By default, users are reminded every day they do not create an entry. This frequency can be changed or notifications turned off from the settings menu. Every day, an Alarm will 
-		send out an Intent to a BroadcastReceiver that handles messages. In this BroadcastReceiver, we check how long its been since the last entry was created and how long its been since
-		the last notification. These values are stored in SharedPreferences and are updated in the BroadcastReceiver every time the Alarm goes off, depending on what happens. The value for
-		the last entry created is reset to 0 in the entry creation Activity. Based on the user's settings, days since last entry, and days since last notification, the BroadcastReceiver 
-		decides whether to send a notification or not. If a notification is not sent, the days since last entry and days since last notification values are incremented in SharedPreferences.
-		If a notification is sent, days since last entry is incremented, but days since last notification is reset to 0. The notification message is chosen randomly from a pool of messages 
-		depending on how long its been since the user created an entry. For example, the pool of messages if the last entry was created less than a week ago is different than the pool
-		of messages if it has been more than a week. If the notification is clicked on, it will bring the user to the log in screen. If the user is already logged in, this 
-		immediately opens to the Main Menu. <br/><br/>
+            <b>Notifications</b> <br/>
+            Notification reminders are sent out using a combination of an Alarm and BroadcastReceiver. We wanted the app to remind users to check in if they hadn't created an entry in a while.
+            By default, users are reminded every day they do not create an entry. This frequency can be changed or notifications turned off from the settings menu. Every day, an Alarm will
+            send out an Intent to a BroadcastReceiver that handles messages at the time specified by the user (12:00PM by default). In this BroadcastReceiver, we check how long its been since the last entry was created and how long its been since
+            the last notification. These values are stored in SharedPreferences and are updated in the BroadcastReceiver every time the Alarm goes off, depending on what happens. The value for
+            the last entry created is reset to 0 in the entry creation Activity. Based on the user's settings, days since last entry, and days since last notification, the BroadcastReceiver
+            decides whether to send a notification or not. If a notification is not sent, the days since last entry and days since last notification values are incremented in SharedPreferences.
+            If a notification is sent, days since last entry is incremented, but days since last notification is reset to 0. The notification message is chosen randomly from a pool of messages
+            depending on how long its been since the user created an entry. For example, the pool of messages if the last entry was created less than a week ago is different than the pool
+            of messages if it has been more than a week. If the notification is clicked on, it will bring the user to the log in screen. If the user is already logged in, this
+            immediately opens to the Main Menu. <br/><br/>
 
-		<b> Settings </b> <br/>
-		Three different settings are given to the user. The first is the option to change their password. The second is a setting for the user to choose what time they would like to receive
-		notification reminders (this is 12:00PM by default). For this setting to go into effect, the user must restart the app. The third and final setting is notification frequency.
-		<br/><br/>
+            <b> Settings </b> <br/>
+            Three different settings are given to the user. The first is the option to change their password. The second is a setting for the user to choose what time they would like to receive
+            notification reminders (this is 12:00PM by default). For this setting to go into effect, the user must restart the app. The third and final setting is notification frequency.
+            Upon changing notification time or frequency, the respective SharedPrefences key-value pair is updated.
+            <br/><br/>
 
-		<b>Other Considerations</b> <br/>
-		Most Activities check in OnCreate() if there is a user logged in. If not, the Activity ends. In the Main Menu Activity, this check happens in onResume(). Therefore, if any
-		Activity after the log in screen detects that a user is not currently logged in, the app will keep popping Activities off the backstack until the log in screen is reached. This
-		means we should never encounter a scenario where a user is not logged in, but is still able to access someone's entries. <br/> <br/>
+            <b>Configuration Changes</b> <br/>
+            Configuration changes were considered when designing the app. In regards to the UI, most seemed Activities seemed to translate well to landscape. However, a few did need special
+            landscape layouts. Additionally, the main menu page is locked in portrait mode because the UI did not scale at all in landscape. Functionality wise, the app works the same
+            in landscape, as it should. The AsyncTasks were an issue when considering reconfiguration changes. Since none of our operations take a very long time, we decided that it
+            was okay if AsyncTasks simply cancel if it is running during a reconfiguation change.<br/><br/>
 
-		<b>Configuration Changes</b> <br/>
-		Configuration changes were considered when designing the app. In regards to the UI, most seemed Activities seemed to translate well to landscape. However, a few did need special
-		landscape layouts. Additionally, the main menu page is locked in portrait mode because the UI did not scale at all in landscape. Functionality wise, the app works the same
-        in landscape, as it should. The AsyncTasks were an issue when considering reconfiguration changes. Since none of our operations take a very long time, we decided that it
-        was okay if AsyncTasks simply cancel if it is running during a reconfiguation change.
-    </td>
-  </tr>
-  <tr>
-    <td class="tg-031e"><img src=https://github.com/jzirkin/cmsc436-feelings_diary/blob/doc-stuff/screenshot1.png?raw=true" alt="Screenshot 1"></td>
-    <td class="tg-031e"><img src=https://github.com/jzirkin/cmsc436-feelings_diary/blob/doc-stuff/screenshot2.png?raw=true" alt="Screenshot 2"></td>
-  </tr>
-  <tr>
-    <td class="tg-031e" colspan="2">External link to YouTube video</td>
-  </tr>
-  <tr>
-    <td class="tg-031e" colspan="2"><a href="https://firebase.google.com/docs/android/setup">Firebase</a><br/>
-	<a href="http://www.android-graphview.org/">GraphView</a></br>
-	<a href="https://github.com/alhazmy13/AndroidWordCloud">AndroidWordCloud</a></td>
-  </tr>
-</tbody></table>
+            <b>Other Considerations</b> <br/>
+            Most Activities check in OnCreate() if there is a user logged in. If not, the Activity ends. In the Main Menu Activity, this check happens in onResume(). Therefore, if any
+            Activity after the log in screen detects that a user is not currently logged in, the app will keep popping Activities off the backstack until the log in screen is reached. This
+            means we should never encounter a scenario where a user is not logged in, but is still able to access someone's entries.
+        </td>
+    </tr>
+    <tr>
+        <td class="tg-031e"><img src=https://github.com/jzirkin/cmsc436-feelings_diary/blob/doc-stuff/screenshot1.png?raw=true" alt="Screenshot 1"></td>
+        <td class="tg-031e"><img src=https://github.com/jzirkin/cmsc436-feelings_diary/blob/doc-stuff/screenshot2.png?raw=true" alt="Screenshot 2"></td>
+    </tr>
+    <tr>
+        <td class="tg-031e" colspan="2">External link to YouTube video</td>
+    </tr>
+    <tr>
+        <td class="tg-031e" colspan="2"><a href="https://firebase.google.com/docs/android/setup">Firebase</a><br/>
+            <a href="http://www.android-graphview.org/">GraphView</a></br>
+            <a href="https://github.com/alhazmy13/AndroidWordCloud">AndroidWordCloud</a></td>
+    </tr>
+    </tbody></table>
 
 <p style="text-align: right;"><a href="https://www.umd.edu/web-accessibility" title="UMD Web Accessibility">Web Accessibility</a></p>
 
