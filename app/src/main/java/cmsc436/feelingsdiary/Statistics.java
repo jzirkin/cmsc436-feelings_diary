@@ -204,8 +204,11 @@ public class Statistics extends AppCompatActivity {
             GridLabelRenderer renderer = barChart.getGridLabelRenderer();
             renderer.setGridColor(Color.WHITE);
             renderer.setHorizontalLabelsColor(Color.WHITE);
+            renderer.setVerticalLabelsColor(Color.WHITE);
             renderer.setLabelFormatter(formatter);
             barChart.setTitle(getString(R.string.graph_title));
+            barChart.setTitleColor(Color.WHITE);
+            barChart.setTitleTextSize(90);
 
             WordCloudView wordCloud = findViewById(R.id.wordCloud);
             List<WordCloud> list = new ArrayList<>();
