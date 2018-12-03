@@ -16,7 +16,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:gravity="center">
 
         <TextView
             android:textSize="32sp"
@@ -26,13 +28,15 @@
             android:id="@+id/notification_frequency_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/change_notification_frequency" />
+            android:text="@string/change_notification_frequency"
+            android:layout_marginBottom="16dp"/>
 
         <RadioGroup
             android:id="@+id/frequency_group"
             android:layout_below="@id/notification_frequency_text"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
 
             <RadioButton
                 android:buttonTint="@color/white"
@@ -72,11 +76,14 @@
         </RadioGroup>
 
         <Button
+            android:textColor="@color/white"
+            android:background="@color/colorPrimaryDark"
             android:id="@+id/save_notification_frequency_btn"
             android:layout_below="@id/frequency_group"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="@string/save_notification_frequency" />
+            android:text="@string/save_notification_frequency"
+            android:layout_centerHorizontal="true"/>
     </RelativeLayout>
 
 </RelativeLayout>
