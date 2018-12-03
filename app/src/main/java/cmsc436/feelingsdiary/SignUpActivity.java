@@ -54,16 +54,6 @@ public class SignUpActivity extends AppCompatActivity {
         mEmailView = findViewById(R.id.email);
 
         mPasswordView = findViewById(R.id.password);
-        // Listener for Enter Key
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                    attemptSignUp();
-                }
-                return true;
-            }
-        });
         mConfirmPasswordView = findViewById(R.id.confirm_password);
 
         Button mSignUpButton = findViewById(R.id.email_sign_in_button);

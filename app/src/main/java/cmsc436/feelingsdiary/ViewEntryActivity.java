@@ -29,7 +29,6 @@ public class ViewEntryActivity extends AppCompatActivity {
 
     TextView mDateText;
     RatingBar mMoodRating;
-    TextView mLocationText;
     TextView mThoughtsText;
     TextView mTags;
 
@@ -55,14 +54,12 @@ public class ViewEntryActivity extends AppCompatActivity {
 
         mDateText = findViewById(R.id.date);
         mMoodRating = findViewById(R.id.mood_scale);
-        mLocationText = findViewById(R.id.recorded_location);
         mThoughtsText = findViewById(R.id.recorded_thoughts);
         mTags = findViewById(R.id.recorded_tags);
         mEntry = (Entry) getIntent().getSerializableExtra("entry");
 
         mDateText.setText(mEntry.getDate());
         mMoodRating.setRating(Float.parseFloat(mEntry.getRating()));
-        mLocationText.setText("No implemented yet");
         List<String> tags = mEntry.getTags();
         StringBuilder tag;
         if (tags == null) {

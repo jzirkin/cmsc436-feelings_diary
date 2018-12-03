@@ -123,7 +123,7 @@ public class NotificationReminderReceiver extends BroadcastReceiver {
                     stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
             Notification notification = new Notification.Builder(context, channelID)
-                    .setSmallIcon(android.R.drawable.stat_sys_warning)
+                    .setSmallIcon(R.drawable.ic_logo)
                     .setChannelId(channelID)
                     .setContentText(message)
                     .setContentTitle(context.getString(R.string.notification_title))
