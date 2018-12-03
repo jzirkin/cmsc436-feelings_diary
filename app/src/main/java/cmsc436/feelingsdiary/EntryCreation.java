@@ -88,7 +88,7 @@ public class EntryCreation extends AppCompatActivity implements Serializable {
                     //                                          int[] grantResults)
                     // to handle the case where the user grants the permission. See the documentation
                     // for ActivityCompat#requestPermissions for more details.
-                    //TODO: Fix this, cant get the actiivity to request permission for
+                    //TODO: Fix this, cant get the activity to request permission for
                     // ActivityCompat.requestPermissions(getApplicationContext(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
                 }
                 else{
