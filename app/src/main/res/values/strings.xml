@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Feelings Diary</string>
+    <string name="app_name">m.io</string>
 
     <!-- Strings related to login -->
     <string name="title_activity_login">Log in</string>
@@ -8,14 +8,14 @@
     <string name="action_log_in">Log in</string>
     <string name="action_log_in_short">Log in</string>
     <string name="error_invalid_password">
-        Passwords must be greater than 5 characters and must contain an uppercase and special character.</string>
+        Passwords must be greater than 5 characters and must contain a number.</string>
     <string name="error_incorrect_password">This password did not match an existing email.</string>
     <string name="error_field_required">This field is required.</string>
-    <string name="sign_up_text_field">Don\'t have an account? Sign up below.</string>
+    <string name="sign_up_text_field">Don\'t have an account? Sign up <u>here</u>.</string>
     <string name="action_sign_up">Sign Up</string>
-    <string name="forgot_password"><u>Forgot your password? Click here to reset it.</u></string>
+    <string name="forgot_password"><u>Forgot your password?</u></string>
 
-    <!-- Strings related to login -->
+    <!-- Strings related to sign up -->
     <string name="title_activity_sign_up">Sign up</string>
     <string name="cancel">Cancel</string>
     <string name="error_existing_email">This email already exists.</string>
@@ -23,9 +23,100 @@
     <string name="error_passwords_dont_match">Passwords must match.</string>
     <string name="error_invalid_email">Please enter a valid email.</string>
 
+    <!-- Strings related to entry creation -->
+    <string name="title_activity_entry_creation">EntryCreation</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="text">How are you doing today?</string>
+    <string name="hint">Today, I…</string>
+    <string name="submit">Submit</string>
+    <string name="tags">Enter any tags separated by commas here:</string>
+    <string name="message_text">Message:</string>
+
+    <!-- Strings related to Main -->
+    <string name="day">D A Y\n 0 1</string>
+    <string name="add_new_entry">New Entry</string>
+    <string name="view_stats">Stats</string>
+    <string name="view_calendar">Calendar</string>
+    <string name="view_search">Search Entries</string>
+    <string name="menu_welcome">Welcome</string>
+    <string name="sign_out">Log Out</string>
+
+    <!-- Strings related to Main Popup Menu -->
+    <string name="settings">Settings</string>
+    <string name="logout">Logout</string>
+
+    <!-- String related to Settings -->
+    <string name="change_notification_time">Change Notification Time</string>
+    <string name="save_notification_time">Save Notification Time</string>
+    <string name="change_notification_frequency">Change Notification Frequency</string>
+    <string name="frequency_daily">Daily</string>
+    <string name="frequency_few_days">Few Days</string>
+    <string name="frequency_weekly">Weekly</string>
+    <string name="frequency_never">Never</string>
+    <string name="save_notification_frequency">Save Notification Frequency</string>
+    <string name="restart_app">You must restart the app for this change to go into effect.</string>
+    <string name="saved">Saved!</string>
+    <string name="change_password">Change Password</string>
+    <string name="change_notif_freq">Change Notification Frequency</string>
+    <string name="change_notif_time">Change Notification Time</string>
+
     <!-- Strings related to password reset -->
     <string name="button_reset_password">Reset Password</string>
     <string name="error_bad_email">There is no account associated with this email.</string>
     <string name="toast_email_sent">Email sent successfully!</string>
     <string name="return_button">Return</string>
+
+    <!-- Strings related to notifications -->
+    <string name="notification_title">Mood.io</string>
+    <string name="channel_title">Reminder Channel</string>
+    <string name="channel_description">Channel for reminders in Mood.io</string>
+    <string name="channel_id">reminderID</string>
+    <string name="daily_reminder_1">We haven\'t heard from you today. Come check in!</string>
+    <string name="daily_reminder_2">Make sure you check in today!</string>
+    <string name="daily_reminder_3">How are you feeling today?</string>
+    <string name="weekly_reminder_1">It\'s been a whole week since we last heard from you. What\'s been going on?</string>
+    <string name="weekly_reminder_2">It\'s been a while. We\'re interested in how you\'ve been doing.</string>
+    <string name="long_time_reminder">Hey it\'s been a really long time. How\'ve you been?</string>
+
+    <!-- Strings related to viewing an entry -->
+    <string name="diary_entry_label">Diary Entry</string>
+    <string name="diary_entry_date">Date:</string>
+    <string name="diary_entry_location">Location:</string>
+    <string name="diary_entry_Mood">Mood:</string>
+    <string name="diary_entry_thoughts">Thoughts:</string>
+    <string name="delete_diary_entry">Delete Entry</string>
+    <string name="delete_prompt">Are you sure you want to delete this diary Entry?</string>
+    <string name="yes_delete">Yes</string>
+
+    <!-- Strings related to searching -->
+    <string name="search_text">Enter a word or phrase to search:</string>
+    <string name="search_button">Search</string>
+    <string name="no_search_results">We couldn\'t find any entries that contained your search word(s). Please try again.</string>
+    <string name="datetime">Date and Time: </string>
+    <string name="mood_rating">Mood: </string>
+    <string name="message">Message: </string>
+    <string name="tags_string">Tags: </string>
+
+    <!-- Strings related to the CalendarActivity -->
+    <string name="calendar_vew_label">Select a Date to View Entries</string>
+    <string name="title_activity_change_password">ChangePasswordActivity</string>
+    <string name="title_activity_notification_time_setting">NotificationTimeSettingActivity</string>
+
+    <!-- Strings related to stats -->
+    <string name="graph_title">Average Mood Rating Per Month</string>
+    <string name="jan">Jan</string>
+    <string name="feb">Feb</string>
+    <string name="mar">Mar</string>
+    <string name="apr">Apr</string>
+    <string name="may">May</string>
+    <string name="jun">Jun</string>
+    <string name="jul">Jul</string>
+    <string name="aug">Aug</string>
+    <string name="sep">Sep</string>
+    <string name="oct">Oct</string>
+    <string name="nov">Nov</string>
+    <string name="dec">Dec</string>
+
 </resources>

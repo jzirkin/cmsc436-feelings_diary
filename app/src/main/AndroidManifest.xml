@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="cmsc436.feelingsdiary">
-
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"
@@ -13,10 +9,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login">
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,12 +24,41 @@
         <activity
             android:name=".SignUpActivity"
             android:label="@string/title_activity_sign_up"
-            android:parentActivityName=".LoginActivity">
+            android:parentActivityName=".LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cmsc436.feelingsdiary.LoginActivity" />
         </activity>
-        <activity android:name=".ForgotPasswordActivity"></activity>
+        <activity android:name=".ForgotPasswordActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".EntryCreation" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SettingsActivity" />
+        <activity
+            android:name=".SearchActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ViewEntryActivity"
+            android:label="@string/diary_entry_label" />
+
+        <receiver android:name=".NotificationReminderReceiver" />
+
+        <activity
+            android:name=".CalendarActivity"
+            android:label="@string/calendar_vew_label" />
+        <activity android:name=".Statistics" />
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:label="@string/title_activity_change_password"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".NotificationTimeSettingActivity"
+            android:label="@string/title_activity_notification_time_setting"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".NotificationFrequencyActivity"/>
     </application>
 
 </manifest>

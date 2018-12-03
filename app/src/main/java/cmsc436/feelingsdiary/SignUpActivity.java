@@ -3,6 +3,7 @@ package cmsc436.feelingsdiary;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
@@ -16,6 +17,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,14 +35,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.concurrent.CountDownLatch;
 
-/**
- * A login screen that offers login via email/password.
- */
+/* Activity for creating a new account for the app using FirebaseAuth */
 public class SignUpActivity extends AppCompatActivity {
 
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
     private UserSignUpTask mAuthTask = null;
 
     // UI references.
@@ -54,20 +51,9 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        setupActionBar();
-        // Set up the login form.
         mEmailView = findViewById(R.id.email);
 
         mPasswordView = findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                    attemptSignUp();
-                }
-                return true;
-            }
-        });
         mConfirmPasswordView = findViewById(R.id.confirm_password);
 
         Button mSignUpButton = findViewById(R.id.email_sign_in_button);
@@ -78,37 +64,24 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-        Button mCancelButton = findViewById(R.id.cancel_button);
-        mCancelButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        mSignUpFieldView = findViewById(R.id.login_form);
+        mSignUpFieldView = findViewById(R.id.email_login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
 
-    /**
-     * Set up the {@link android.app.ActionBar}, if the API is available.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private void setupActionBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            // Show the Up button in the action bar.
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
+    /* Starts the signing up chain of events. First checks for email/password validity, then
+       sends the AsyncTask to do its thing.
      */
     private void attemptSignUp() {
         if (mAuthTask != null) {
             return;
+        }
+
+        // Hides the keyboard
+        InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        try {
+            inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        } catch (NullPointerException e) {
+            // do nothing
         }
 
         // Reset errors.
@@ -165,16 +138,14 @@ public class SignUpActivity extends AppCompatActivity {
 
     private boolean isPasswordValid(String password) {
         return (password.length() > 5) &&
-                (password.matches(".*[1-9].*"));
+                (password.matches(".*[0-9].*"));
     }
 
     private boolean isEmailValid(String email) {
         return email.matches(".+@.+\\..+");
     }
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
+    /* Hides the UI and shows a spinning-loading bar while the AsyncTask is running */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
@@ -208,10 +179,8 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
+    /* AsyncTask that registers the user with FirebaseAuth. Fails if the email already is
+    * registered or their is some error, succeeds otherwise */
     public class UserSignUpTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mEmail;
@@ -233,6 +202,7 @@ public class SignUpActivity extends AppCompatActivity {
 
             mAuth.createUserWithEmailAndPassword(mEmail, mPassword)
                     .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
+                        // If the task failed, update signUpSuccess
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (!task.isSuccessful()) {
@@ -259,8 +229,10 @@ public class SignUpActivity extends AppCompatActivity {
             mAuthTask = null;
             showProgress(false);
 
+            // If the account was registered, close the Activity
             if (success) {
                 finish();
+            // Otherwise, let the user know why
             } else {
                 mEmailView.setError(getString(R.string.error_existing_email));
                 mEmailView.requestFocus();
