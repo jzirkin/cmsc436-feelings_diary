@@ -5,4 +5,6 @@
     <color name="colorAccent">#FFFFFF</color>
     <color name="white">#FFFFFF</color>
     <color name="cream">#E9DCCD</color>
+    <color name="petal">#E3BAB3</color>
+    <color name="fresh">#849974</color>
 </resources>

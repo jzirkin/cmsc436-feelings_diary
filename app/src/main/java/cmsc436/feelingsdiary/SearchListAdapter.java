@@ -91,20 +91,20 @@ public class SearchListAdapter extends BaseAdapter {
 
         int rating = Integer.parseInt(entry.getRating());
         if (rating >= 4) {
-            holder.datetime.setTextColor(Color.parseColor("#003A00"));
-            holder.message.setTextColor(Color.parseColor("#003A00"));
-            holder.moodRating.setTextColor(Color.parseColor("#003A00"));
-            holder.tags.setTextColor(Color.parseColor("#003A00"));
+            holder.datetime.setTextColor(Color.parseColor("#849974"));
+            holder.message.setTextColor(Color.parseColor("#849974"));
+            holder.moodRating.setTextColor(Color.parseColor("#849974"));
+            holder.tags.setTextColor(Color.parseColor("#849974"));
         } else if (rating > 2) {
-            holder.datetime.setTextColor(Color.parseColor("#CCA900"));
-            holder.message.setTextColor(Color.parseColor("#CCA900"));
-            holder.moodRating.setTextColor(Color.parseColor("#CCA900"));
-            holder.tags.setTextColor(Color.parseColor("#CCA900"));
+            holder.datetime.setTextColor(Color.parseColor("#E9DCCD"));
+            holder.message.setTextColor(Color.parseColor("#E9DCCD"));
+            holder.moodRating.setTextColor(Color.parseColor("#E9DCCD"));
+            holder.tags.setTextColor(Color.parseColor("#E9DCCD"));
         } else {
-            holder.datetime.setTextColor(Color.parseColor("#310000"));
-            holder.message.setTextColor(Color.parseColor("#310000"));
-            holder.moodRating.setTextColor(Color.parseColor("#310000"));
-            holder.tags.setTextColor(Color.parseColor("#310000"));
+            holder.datetime.setTextColor(Color.parseColor("#36384C"));
+            holder.message.setTextColor(Color.parseColor("#36384C"));
+            holder.moodRating.setTextColor(Color.parseColor("#36384C"));
+            holder.tags.setTextColor(Color.parseColor("#36384C"));
         }
 
         return newView;
