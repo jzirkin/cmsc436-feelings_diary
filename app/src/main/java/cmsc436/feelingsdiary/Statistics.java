@@ -208,7 +208,7 @@ public class Statistics extends AppCompatActivity {
             renderer.setLabelFormatter(formatter);
             barChart.setTitle(getString(R.string.graph_title));
             barChart.setTitleColor(Color.WHITE);
-            barChart.setTitleTextSize(90);
+            barChart.setTitleTextSize(60);
 
             WordCloudView wordCloud = findViewById(R.id.wordCloud);
             List<WordCloud> list = new ArrayList<>();
