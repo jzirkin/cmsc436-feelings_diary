@@ -10,6 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.Address;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -62,7 +66,29 @@ public class ViewEntryActivity extends AppCompatActivity {
 
         mDateText.setText(mEntry.getDate());
         mMoodRating.setRating(Float.parseFloat(mEntry.getRating()));
-        mLocationText.setText("No implemented yet");
+
+        //Gets the location and builds a string out of it
+        String locationString = "";
+        Location loc = mEntry.getLocation();
+        if(loc == null)
+            locationString = getString(R.string.invalid_location);
+        else{
+            double latitude = loc.getLatitude();
+            double longitude = loc.getLongitude();
+            Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+            try{
+                List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                String cityName = addresses.get(0).getAddressLine(0);
+                String stateName = addresses.get(0).getAddressLine(1);
+                String countryName = addresses.get(0).getAddressLine(2);
+                locationString = cityName + ", " + stateName + " " + countryName;
+            }
+            catch (IOException e){
+                locationString = getString(R.string.invalid_location);
+            }
+        }
+
+        mLocationText.setText(locationString);
         List<String> tags = mEntry.getTags();
         StringBuilder tag;
         if (tags == null) {

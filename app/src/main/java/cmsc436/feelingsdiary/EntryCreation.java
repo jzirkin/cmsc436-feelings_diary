@@ -1,14 +1,24 @@
 package cmsc436.feelingsdiary;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+
+
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+
 import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,16 +29,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /* Activity for creating an Entry. Entries are stored in Firebase under the user and
-* date they are created. */
+ * date they are created. */
 public class EntryCreation extends AppCompatActivity implements Serializable {
 
     private TextView mTextMessage;
     private SeekBar mSeekBar;
     private TextView mTags;
     private String userID;
+    private LocationManager mLocationManager;
+    final private int FIVE_MINS = 5*60*100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +52,8 @@ public class EntryCreation extends AppCompatActivity implements Serializable {
         Button mSubmitButton = findViewById(R.id.button);
         mSeekBar = findViewById(R.id.seekBar);
         mTags = findViewById(R.id.tags);
+        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
 
         // If there is not a user currently logged in, get out
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -63,12 +78,34 @@ public class EntryCreation extends AppCompatActivity implements Serializable {
 
                 sdf = new SimpleDateFormat("EEE, MMM dd, yyyy, h:mm a", Locale.US);
                 String entryDate = sdf.format(currentTime);
+                Location lastLocation = null;
+                //Get location info
+                if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    //TODO: Fix this, cant get the actiivity to request permission for
+                    // ActivityCompat.requestPermissions(getApplicationContext(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+                }
+                else{
+                    lastLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    if(lastLocation == null){
+                        lastLocation = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    }
+                }
+                //TODO maybe handle no locaiton found with LocationListener? Not sure when it should be used as this seems to do the job.
+
 
                 // We don't check the contents of the entry because it's optional
                 Entry entry = new Entry(
                         entryDate,
                         "" + (mSeekBar.getProgress() + 1),
                         mTextMessage.getText().toString(),
+                        lastLocation,
                         Arrays.asList(mTags.getText().toString().split(",")));
                 databaseRef.setValue(entry);
 
