@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
@@ -200,7 +201,10 @@ public class Statistics extends AppCompatActivity {
                     getString(R.string.dec),
                     ""
             });
-            barChart.getGridLabelRenderer().setLabelFormatter(formatter);
+            GridLabelRenderer renderer = barChart.getGridLabelRenderer();
+            renderer.setGridColor(0x000000);
+            renderer.setHorizontalLabelsColor(0x000000);
+            renderer.setLabelFormatter(formatter);
             barChart.setTitle(getString(R.string.graph_title));
 
             WordCloudView wordCloud = findViewById(R.id.wordCloud);
@@ -212,6 +216,7 @@ public class Statistics extends AppCompatActivity {
             wordCloud.setColors(ColorTemplate.PASTEL_COLORS);
             wordCloud.setSize(500, 400);
             wordCloud.notifyDataSetChanged();
+            wordCloud.setBackgroundColor(0x00FFFFFF);
 
             showProgress(false);
         }
