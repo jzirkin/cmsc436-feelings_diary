@@ -202,8 +202,8 @@ public class Statistics extends AppCompatActivity {
                     ""
             });
             GridLabelRenderer renderer = barChart.getGridLabelRenderer();
-            renderer.setGridColor(0x000000);
-            renderer.setHorizontalLabelsColor(0x000000);
+            renderer.setGridColor(Color.WHITE);
+            renderer.setHorizontalLabelsColor(Color.WHITE);
             renderer.setLabelFormatter(formatter);
             barChart.setTitle(getString(R.string.graph_title));
 
